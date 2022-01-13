@@ -3,12 +3,45 @@ const cookieParser = require('cookie-parser');  // Allows us to read and write t
 const port = 8000;
 const app = express();
 const db = require('./config/mongoose');
+const session = require('express-session'); // to create session cookie and store user information in cookies in an encrypted form.
+const passport = require('passport');  // passport uses session-cookies to store the identity of the authenticated user.
+const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongodb-session')(session);  // Used for storing cookies, otherwies cookies get deleted as soon as server restarts due to limited storage.
 
-app.set('view engine','ejs');      //set up the view engine
-app.set('views','./views');        // specify a folder to look for the views.
 app.use(express.urlencoded());     // so that we can collect form data and store it in req.body 
 app.use(express.static('assets')); // to access static files
 app.use(cookieParser());           // set up the cookie parser
+
+app.set('view engine','ejs');      //set up the view engine
+app.set('views','./views');        // specify a folder to look for the views.
+
+// express session is used to store user id in cookies in an encrypted form.
+//mongo store is used to store the session cookie in the db
+app.use(session({
+    name:'socilaMediaApplication',
+    // TODO: change the secret before deployment in production mode
+    secret:'webDevelopment',
+    saveUninitialized:false,  //When user is not logged in, don't store extra info in session cookie.
+    resave:false,    // Don't save the user's info in session cookie if it has not been changed.
+    cookie:{
+        maxAge: (1000*60*100)
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection:db,
+            autoRemove:'disabled'
+        },
+        function(err){
+            console.log(err || 'connect-mongodb setup ok');
+        }
+    )
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser);
+
 //Use Express Router
 app.use('/',require('./routes/index'));
 

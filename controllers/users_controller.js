@@ -1,14 +1,36 @@
+const e = require('express');
 const User = require('../models/user');
 
-
+module.exports.profile = function(req,res){
+    User.findById(req.user,function(err,user){
+        if(err){
+            console.log('Error in finding the user');
+            return res.redirect('back');
+        }
+        if(user){
+            return res.render('profile',{
+               user:user
+            });
+        }
+        else{
+            return res.redirect('back');
+        }
+    });
+}
 
 //Render the login page
 module.exports.login = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render('login');
 } 
 
 //Render the Signup Page
 module.exports.signup = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render('signup');
 }
 
@@ -36,7 +58,7 @@ module.exports.create = function(req,res){
 
 //sign in and create a session for the user.
 module.exports.createSession = function(req,res){
-    
+    return res.redirect('/');
 }
 
 
