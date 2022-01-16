@@ -17,6 +17,10 @@
                             <input type="submit" value="Add Comment">
                         </form>
                     <% } %>
+                    <% for (comment of post.comments ) { %>
+                         <p><%=comment.content%></p>
+                         <p><%=comment.user.name%></p>
+                    <% } %>
                 <% } %>
             <% if(locals.user){%>
                 <form action="/posts/create" id="new-post-form" method="POST">
