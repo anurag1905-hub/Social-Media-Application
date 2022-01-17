@@ -24,14 +24,11 @@ module.exports.home = function(req,res){
         }
     })
     .exec(function(err,posts){
-        if(err){
-            console.log('Error in finding the posts ',err);
-            return;
-        }
-        else{
+        User.find({},function(err,users){
             return res.render('home',{
-                posts:posts
+                posts:posts,
+                all_users:users
             });
-        }
+        });
     });
 }

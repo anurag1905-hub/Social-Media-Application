@@ -9,13 +9,24 @@ module.exports.profile = function(req,res){
         }
         if(user){
             return res.render('profile',{
-               user:user
+               profile_user:user
             });
         }
         else{
             return res.redirect('back');
         }
     });
+}
+
+module.exports.update = function(req,res){
+    if(req.user.id==req.params.id){
+        User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+            return res.redirect('back');
+        });
+    }
+    else{
+        return res.status(401).send('Unauthorized');
+    }
 }
 
 //Render the login page
