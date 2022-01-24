@@ -7,11 +7,13 @@ const usersController = require('../controllers/users_controller');
 router.get('/signup',usersController.signup);
 router.get('/login',usersController.login);
 router.post('/create',usersController.create);
-router.get('/feed',usersController.feed);
-router.get('/posts',usersController.posts);
-router.get('/profile/:id',passport.checkAuthentication,usersController.profile);
+router.get('/feed',passport.checkAuthentication,usersController.feed);
+router.get('/posts',passport.checkAuthentication,usersController.posts);
+router.get('/friends',passport.checkAuthentication,usersController.friends);
+router.get('/messages',passport.checkAuthentication,usersController.messages);
+router.get('/profile',passport.checkAuthentication,usersController.profile);
 router.post('/update/:id',passport.checkAuthentication,usersController.update);
-router.get('/signout',usersController.destroySession);
+router.get('/signout',passport.checkAuthentication,usersController.destroySession);
 
 
 // Use passport as a middleware to authenticate

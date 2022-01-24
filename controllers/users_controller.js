@@ -74,10 +74,18 @@ module.exports.posts = function (req,res){
     return res.render('post');
 }
 
+module.exports.friends = function(req,res){
+    return res.render('friend');
+}
+
+module.exports.messages = function(req,res){
+    return res.render('message');
+}
+
 //sign in and create a session for the user.
 module.exports.createSession = function(req,res){
     req.flash('success','Logged in Successfully');
-    return res.redirect('/');
+    return res.redirect('/users/feed');
 }
 
 //sign out the current signed in user

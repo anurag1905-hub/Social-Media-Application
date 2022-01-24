@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="/css/feed.css">
+        <link rel="stylesheet" type="text/css" href="/css/message.css">
     </head>
     <body>
         <div class="container mt-3">
@@ -20,7 +20,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="/users/feed">FEED</a>
                         </li>
                         <% if(locals.user) {%>
@@ -33,7 +33,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/users/friends">FRIENDS</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a class="nav-link" href="/users/messages">MESSAGES</a>
                             </li>
                             <li class="nav-item">
@@ -51,10 +51,10 @@
                 </div>  
             </nav>
             <div class="container-fluid box">
-                <div class="home-header">
-                    FEED:
+                <div class="message-header">
+                    MESSAGES:
                 </div>
-                <div class="home-box">
+                <div class="message-box">
                     
                 </div>
             </div>
