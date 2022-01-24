@@ -70,8 +70,33 @@ module.exports.feed = function (req,res){
     return res.render('feed');
 }
 
-module.exports.posts = function (req,res){
-    return res.render('post');
+module.exports.posts = async function (req,res){
+    try{
+        let user = await User.findById(req.user._id)
+        .populate({
+            path:'posts',
+            populate:[
+                {
+                    path:'comments',
+                    populate:{
+                        path:'user'
+                    },
+                },
+                {
+                    path:'user'
+                }
+           ],
+           options:{
+               sort:{createdAt:-1},
+           }
+        });
+        return res.render('post',{
+            profileUser:user
+        });
+    }catch(err){
+        req.flash('error','Error');
+        return res.redirect('/users/feed');
+    }
 }
 
 module.exports.friends = function(req,res){
