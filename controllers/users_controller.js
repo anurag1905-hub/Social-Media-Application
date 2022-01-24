@@ -1,4 +1,3 @@
-const e = require('express');
 const User = require('../models/user');
 
 module.exports.profile = function(req,res){
@@ -64,7 +63,15 @@ module.exports.create = function(req,res){
         else{
             return res.redirect('/users/login');
         }
-    })
+    });
+}
+
+module.exports.feed = function (req,res){
+    return res.render('feed');
+}
+
+module.exports.posts = function (req,res){
+    return res.render('post');
 }
 
 //sign in and create a session for the user.
