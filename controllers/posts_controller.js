@@ -9,9 +9,22 @@ module.exports.create = async function(req,res){
             content:req.body.content,
             user:req.user._id
         });
+        let obj = {
+            name:req.user.name,
+            time:post.createdAt.toDateString(),
+        };
         let user = await User.findById(req.user._id);
         user.posts.push(post);
         user.save();
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    post:post,
+                    obj:obj
+                },
+                message:"Post Created!"
+            });
+        }
         req.flash('success','post published');
         return res.redirect('back');
     }catch(err){
@@ -30,6 +43,14 @@ module.exports.destroy = async function(req,res){
             post.remove();
             await User.findByIdAndUpdate(req.user._id,{$pull:{posts:req.params.id}});
             await Comment.deleteMany({post:req.params.id});
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        post_id:req.params.id
+                    },
+                    message:"Post removed"
+                });
+            }
             req.flash('success','post deleted');
             return res.redirect('back');
         }
