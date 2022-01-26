@@ -17,14 +17,33 @@ module.exports.profile = function(req,res){
     });
 }
 
-module.exports.update = function(req,res){
-    if(req.user.id==req.params.id){
-        User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+module.exports.update = async function(req,res){
+    try{
+        if(req.user.id==req.params.id){
+            let user = await User.findById(req.user._id);
+            User.uploadedAvatar(req,res,function(err){
+               if(err){
+                   console.log('************Multer Error:',err);
+               }
+               user.name = req.body.name;
+               user.email = req.body.email;
+               if(req.file){
+                   // this is saving the path of the uploaded file into the avatar field of the user.
+                   user.avatar = User.avatarPath + '/' + req.file.filename;
+               }
+               user.save();
+               return res.redirect('back');
+            });
+            req.flash('success','Updated');
             return res.redirect('back');
-        });
-    }
-    else{
-        return res.status(401).send('Unauthorized');
+        }
+        else{
+            req.flash('error','Unauthorized');
+            return res.status(401).send('Unauthorized');
+        }
+    }catch(err){
+        req.flash('error','Error');
+        return res.redirect('/user/profile');
     }
 }
 
