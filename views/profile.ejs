@@ -10,11 +10,8 @@
         <link rel="stylesheet" type="text/css" href="/css/profile.css">
     </head>
     <body>
-        <div class="container mt-3">
-            <div class="container-fluid text-center bg-dark py-1 header">
-                <p class="text-warning heading p-0 m-0">Social Media Application</p>
-            </div>
-            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <div class="container-fluid" style="padding:0px;margin:0px;">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -50,23 +47,18 @@
                     </ul>
                 </div>  
             </nav>
-            <div class="container-fluid box">
-                <div class="profile-header">
-                    PROFILE:
-                </div>
-                <div class="profile-box">
-                    <a href="/users/signout">Sign Out</a>
-                    <% if(user.id==profile_user.id) { %>
-                        <form action="/users/update/<%=profile_user.id%>" enctype="multipart/form-data" method="post">
-                            <input type="text" name="name" placeholder="Your Name" value="<%=profile_user.name%>" required>
-                            <input type="email" name="email" placeholder="Your Email" value="<%=profile_user.email%>" required>
-                            <input type="file" name="avatar" placeholder="Profile Picture">
-                            <input type="submit" value="update">
-                        </form>
-                    <% } else { %>
-                        <p><%=profile_user.email%></p>
-                        <p><%=profile_user.name%></p>
-                    <% } %>
+            <div class="container-fluid">
+                <div class="wrapper">
+                    <div class="card profile-container">
+                        <img class="card-img-top" src="<%=profile_user.avatar%>" alt="Profile Picture">
+                        <div class="card-body">
+                            <h4 class="card-title">Name-<%=profile_user.name%></h4>
+                            <p class="card-text">Email-<%=profile_user.email%></p>
+                            <%if(locals.user.id==profile_user.id){%>
+                               <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-primary">Edit Profile</a>
+                            <%}%>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

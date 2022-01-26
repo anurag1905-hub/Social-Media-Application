@@ -28,8 +28,7 @@ body{
 .box{
     height:auto;
     min-height:70vh;
-    display:flex;
-    flex-direction:column;
+    margin:0px;
 }
 
 .post-header{
@@ -41,7 +40,8 @@ body{
 .post-box{
     height:90%;
     min-height:63vh;
-    margin-bottom:1rem;
+    margin:0px;
+    margin-top:5rem;
 }
 
 .flex-wrapper{

@@ -59,6 +59,9 @@ app.use(customMware.setFlash);
 //Use Express Router
 app.use('/',require('./routes/index'));
 
+//Make the uploads path available to the browser.
+app.use('/uploads',express.static(__dirname+'/uploads'));
+
 app.listen(port,function(err){
    if(err){
        console.log('Error in starting the server ',err);

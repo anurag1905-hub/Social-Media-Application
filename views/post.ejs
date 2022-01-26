@@ -12,11 +12,8 @@
         <link rel="stylesheet" type="text/css" href="/css/post.css">
     </head>
     <body>
-        <div class="container mt-3">
-            <div class="container-fluid text-center bg-dark py-1 header">
-                <p class="text-warning heading p-0 m-0">Social Media Application</p>
-            </div>
-            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <div class="container-fluid mt-3">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -52,7 +49,7 @@
                     </ul>
                 </div>  
             </nav>
-            <div class="container box" style="padding:0px;">
+            <div class="container-fluid box" style="padding:0px;margin:0px;">
                 <div class="post-box">
                     <form action="/posts/create" id="new-post-form" method="post">
                         <textarea name="content" class="form-control" style="margin-bottom:1rem;resize:none;" rows="5" placeholder="Type Here.." required></textarea>
@@ -60,10 +57,10 @@
                     </form>
                     <br><br>
 
-                    <div id="posts-list-container" class="container post-group" style="padding:0px;">
+                    <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;">
                     
                         <% for (post of profileUser.posts) {%>
-                            <div class="container" id="post-<%=post._id%>" style="padding:0px;">
+                            <div class="container-fluid" id="post-<%=post._id%>" style="padding:0px;">
                                 <div class="card" style="padding:1rem;margin-bottom:2rem;">
                                     <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                                         <div style="font-weight:700;">

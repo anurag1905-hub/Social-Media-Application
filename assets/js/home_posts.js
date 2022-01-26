@@ -148,7 +148,7 @@ class PostComments{
 
      // method to create a post in DOM
      let newPostDom = function(post,obj){
-        return $(`<div class="container" id="post-${post._id}" style="padding:0px;">
+        return $(`<div class="container-fluid" id="post-${post._id}" style="padding:0px;">
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                 <div style="font-weight:700;">

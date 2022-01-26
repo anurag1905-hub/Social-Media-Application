@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social Media Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/edit_profile.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/feed">FEED</a>
+                    </li>
+                    <% if(locals.user) {%>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/users/profile">PROFILE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/posts">POSTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/friends">FRIENDS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/messages">MESSAGES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/logout">LOGOUT</a>
+                        </li>
+                    <% } else {%>
+                        <li class="nav-item">
+                                <a class="nav-link" href="/users/login">LOGIN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/signup">SIGNUP</a>
+                        </li>
+                    <% } %>        
+                </ul>
+            </div>  
+        </nav>
+    </div>
+    <div class="container form-container">
+        <h2>Edit Profile</h2>
+        <form action="/users/update/<%=profile_user.id%>" enctype="multipart/form-data" method="post">
+            <div class="mb-3 mt-3">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" value="<%=profile_user.name%>" required>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Your Email" value="<%=profile_user.email%>" required>
+            </div>
+            <div class="mb-3">
+                <label for="profilePicture">Profile Picture:</label>
+                <input type="file" name="avatar" id="profilePicture" class="form-control" placeholder="Profile Picture">
+            </div>
+            <button type="submit" class="btn btn-success">Update</button>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>

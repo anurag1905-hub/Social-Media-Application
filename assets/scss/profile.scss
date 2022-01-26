@@ -5,7 +5,6 @@ html{
 body{
     margin: 0px;
     padding: 0px;
-    background-image: url("/images/authentication_background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -25,23 +24,29 @@ body{
     border-right:4px solid red;
 }
 
-.box{
+.wrapper{
     height:auto;
-    min-height:70vh;
-    background-color:lightgrey;
-    padding:1rem;
+    margin-top:15vh;
     display:flex;
-    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    .profile-container{
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;
+        height:95%;
+        width:auto;
+        max-width:600px;
+        img{
+            margin-top:1rem;
+            width:90%;
+            height:70%;
+        }
+    }
 }
 
-.profile-header{
-    font-size:2rem;
-    color:red;
-    height:10%;
-}
-
-.profile-box{
-    height:90%;
-    min-height:63vh;
-    border:2px solid red;
+.card-body{
+    font-size:1rem;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }

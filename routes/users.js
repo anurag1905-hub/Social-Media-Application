@@ -14,7 +14,8 @@ router.get('/messages',passport.checkAuthentication,usersController.messages);
 router.get('/profile',passport.checkAuthentication,usersController.profile);
 router.post('/update/:id',passport.checkAuthentication,usersController.update);
 router.get('/signout',passport.checkAuthentication,usersController.destroySession);
-
+router.get('/edit_profile/:id',passport.checkAuthentication,usersController.editProfile);
+router.post('/update/:id',passport.checkAuthentication,usersController.update);
 
 // Use passport as a middleware to authenticate
 router.post('/create-session',passport.authenticate(
