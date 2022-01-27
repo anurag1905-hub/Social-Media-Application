@@ -1,42 +1,19 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
-
-// module.exports.create = function(req,res){
-//     Post.findById(req.body.post,function(err,post){
-//         if(err||!post){
-//             console.log('The post for which comment is intended could not be found ',err);
-//             return;
-//         }
-//         else{
-//             Comment.create({
-//                 content:req.body.content,
-//                 user:req.user._id,
-//                 post:post._id
-//             },function(err,comment){
-//                 if(err){
-//                     console.log('Error in creating the comment',err);
-//                     return;
-//                 }
-//                 else{
-//                     post.comments.push(comment);
-//                     post.save();
-//                     return res.redirect('back');
-//                 }
-//             })
-//         }
-//     });
-// }
+const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.create = async function(req,res){
     try{
         let post = await Post.findById(req.body.post);
 
         if(post){
-            let comment = await Comment.create({
+            let c = await Comment.create({
                 content:req.body.content,
                 user:req.user._id,
                 post:post._id
             });
+            let comment = await Comment.findById(c._id).populate('user');
+            commentsMailer.newComment(comment);
             let obj = {
                 name:req.user.name,
                 time:post.createdAt.toDateString(),
@@ -63,21 +40,6 @@ module.exports.create = async function(req,res){
         return;
     }
 }
-
-// module.exports.destroy = function(req,res){
-//     Comment.findById(req.params.id,function(err,comment){
-//        if(comment.user==req.user.id){
-//            let postId = comment.post;
-//            comment.remove();
-//            Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}},function(err,post){
-//               return res.redirect('back');
-//            });
-//        }
-//        else{
-//         return res.redirect('back');
-//        }
-//     });
-// }
 
 module.exports.destroy = async function(req,res){
     try{
