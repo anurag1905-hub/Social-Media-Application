@@ -13,7 +13,7 @@ router.get('/friends',passport.checkAuthentication,usersController.friends);
 router.get('/messages',passport.checkAuthentication,usersController.messages);
 router.get('/profile',passport.checkAuthentication,usersController.profile);
 router.post('/update/:id',passport.checkAuthentication,usersController.update);
-router.get('/signout',passport.checkAuthentication,usersController.destroySession);
+router.get('/logout',passport.checkAuthentication,usersController.destroySession);
 router.get('/edit_profile/:id',passport.checkAuthentication,usersController.editProfile);
 router.post('/update/:id',passport.checkAuthentication,usersController.update);
 
@@ -22,6 +22,9 @@ router.post('/create-session',passport.authenticate(
     'local',
     {failureRedirect:'/users/login'}
 ),usersController.createSession);
+
+router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/users/login'}),usersController.createSession);
 
 module.exports = router;
 
