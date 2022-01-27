@@ -4,16 +4,16 @@ const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.create = async function(req,res){
     try{
-        let post = await Post.findById(req.body.post);
+        let post = await Post.findById(req.body.post).populate('user');
 
         if(post){
-            let c = await Comment.create({
+            let comment = await Comment.create({
                 content:req.body.content,
                 user:req.user._id,
                 post:post._id
             });
-            let comment = await Comment.findById(c._id).populate('user');
-            commentsMailer.newComment(comment);
+
+            commentsMailer.newComment(post);
             let obj = {
                 name:req.user.name,
                 time:post.createdAt.toDateString(),
