@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const resetPassword = require('../models/reset-password');
 const jwt = require('jsonwebtoken');  // Used to generate the token.
-const passwordsMailer = require('../mailers/passwords_mailer');
+const queue = require('../config/kue');
+const resetPasswordWorker = require('../workers/reset_password_worker');
 
 module.exports.profile = function(req,res){
     User.findById(req.user,function(err,user){
@@ -213,7 +214,15 @@ module.exports.sendResetLink = async function(req,res){
             isValid: true
         });
         let reset_Password = await resetPassword.findById(reset_password._id).populate('user');
-        passwordsMailer.reset(reset_Password);
+        //passwordsMailer.reset(reset_Password);
+        let job = queue.create('resetPassword',reset_Password).save(function(err){
+            if(err){
+                console.log('Error in creating a queue');
+            }
+            else{
+                console.log(job.id);
+            }
+         });
         return res.end('A link to reset password has been sent to your email account');
     }catch(err){
         console.log('Unable to send reset Password link',err);
