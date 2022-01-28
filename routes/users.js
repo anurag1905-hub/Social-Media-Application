@@ -25,6 +25,10 @@ router.post('/create-session',passport.authenticate(
 
 router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/users/login'}),usersController.createSession);
+router.get('/reset-password',usersController.reset);
+router.post('/reset-password',usersController.sendResetLink);
+router.get('/reset-password/:token',usersController.resetPassword);
+router.post('/changePassword/:token',usersController.changePassword);
 
 module.exports = router;
 
