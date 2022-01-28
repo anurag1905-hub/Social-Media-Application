@@ -76,9 +76,9 @@
                                     <div class="card-footer">
                                         <div class="posts-footer">
                                             <div>
-                                                <a data-toggle="collapse" href="#collapse<%=post.id%>">Comments <span class="badge"><%=post.comments.length%></span></a><br> 
+                                                <a class="toggle-like-button" data-likes="<%=post.likes.length%>" href="/likes/toggle/?id=<%=post._id%>&type=Post">Like <span class="badge badge-info"><%=post.likes.length%></span></a>
+                                                <a data-toggle="collapse" class="toggle-comments-button" data-likes="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
                                             </div>
-
                                             <div id="delete">
                                                 <% if(locals.user&&(locals.user.id==post.user.id)){%>
                                                    <a href="/posts/destroy/<%=post.id%>" class="delete-post-button">Delete <i class="fas fa-trash"></i></a> 
@@ -117,11 +117,14 @@
                                                             <div>
                                                                 <%=comment.content%>
                                                             </div>
-                                                            <div id="delete">
-                                                                <% if(locals.user&&(locals.user.id==comment.user.id)){%>
-                                                                    <a href="/comments/destroy/<%=comment.id%>" class="delete-comment-button" data-test="<%=comment.id%>">Delete <i class="fas fa-trash"></i></a> 
-                                                                <% } %>
-                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div id="delete">
+                                                            <a class="toggle-like-button" data-likes="<%=comment.likes.length%>" href="/likes/toggle/?id=<%=comment._id%>&type=Comment">Like <span class="badge badge-info"><%=comment.likes.length%></span></a>
+                                                            <% if(locals.user&&(locals.user.id==comment.user.id)){%>
+                                                                <a href="/comments/destroy/<%=comment.id%>" class="delete-comment-button" data-test="<%=comment.id%>">Delete <i class="fas fa-trash"></i></a> 
+                                                            <% } %>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -138,6 +141,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>\
         <script src="/js/home_posts.js"></script>
+        <script src="/js/toggle_likes.js"></script>
+        <script>
+            $('.toggle-like-button').each(function(){
+                let self = this;
+                let toggleLike = new ToggleLike(self)
+            });
+        </script>
         <script>
             <% if(flash.success&&flash.success.length>0) { %>
                 new Noty({

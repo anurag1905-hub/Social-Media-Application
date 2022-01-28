@@ -107,12 +107,20 @@ module.exports.posts = async function (req,res){
             populate:[
                 {
                     path:'comments',
-                    populate:{
-                        path:'user'
-                    },
+                    populate:[
+                        {
+                            path:'user'
+                        },
+                        {
+                            path:'likes'
+                        }
+                    ],
                 },
                 {
                     path:'user'
+                },
+                {
+                    path:'likes'
                 }
            ],
            options:{

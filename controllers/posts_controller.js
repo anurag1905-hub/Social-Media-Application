@@ -1,7 +1,7 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 const User = require('../models/user');
-
+const Like = require('../models/like');
 
 module.exports.create = async function(req,res){
     try{
@@ -40,9 +40,19 @@ module.exports.destroy = async function(req,res){
         //.id means converting the object id into string.
         //When we are comparing two object ids both of them should be in strings.
         if(post.user==req.user.id){ 
-            post.remove();
+
+            //We need to delete the associated likes for the post and all its comment's likes too.
+
+            await Like.deleteMany({likeable:post._id,onModel:'Post'});
+
+            //delete all the likes associated with every comment of the post.
+            //To revise about the syntax: https://stackoverflow.com/questions/17826082/how-to-delete-multiple-ids-in-mongodb/17828822
+
+            await Like.deleteMany({_id:{$in:post.comments}});
+
             await User.findByIdAndUpdate(req.user._id,{$pull:{posts:req.params.id}});
             await Comment.deleteMany({post:req.params.id});
+            post.remove();
             if(req.xhr){
                 return res.status(200).json({
                     data:{

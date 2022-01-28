@@ -57,20 +57,19 @@ body{
     div{
         a {
             font-size:1rem;
+
+            &:hover{
+                text-decoration:none;
+                color:blue;
+            }
         }
         
     }
 }
 
-.posts-footer div a:hover {
-    text-decoration:none;
-    color:blue;
-}
-
 .comments-footer{
     display:flex;
-    flex-direction:row;
-    justify-content:space-between;
+    flex-direction:column;
     div{
         a {
             font-size:1rem;
@@ -79,11 +78,23 @@ body{
     }
 }
 
-a i:hover {
-    color:red;
+a {
+    i{
+        &:hover{
+            color:red;
+        }
+    }
 }
 
-#delete a:hover{
-    color:red;
-    text-decoration:none;
+#delete{
+
+    display:flex;
+    justify-content: space-between;
+    a{
+
+        &:hover{
+            color:red;
+            text-decoration:none;
+        }
+    }
 }
