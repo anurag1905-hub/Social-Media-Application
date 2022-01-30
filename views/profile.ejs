@@ -56,10 +56,13 @@
                             <p class="card-text">Email-<%=profile_user.email%></p>
                             <%if(locals.user.id==profile_user.id){%>
                                <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-success">Edit Profile</a>
-                            <%} else if(friendshipinProgress) {%>
+                            <%} else if(requestSent) {%>
                                <a href="/users/friends/withdrawRequest/<%=profile_user.id%>" class="btn btn-danger">Withdraw Friend Request</a>
+                            <% } else if(requestReceived) { %>
+                               <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success">Accept Friend Request</a>
+                               <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger">Reject Friend Request</a>
                             <% } else { %>
-                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success">Send Friend Request</a>
+                               <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success">Send Friend Request</a>
                             <% } %>
                         </div>
                     </div>

@@ -28,7 +28,7 @@ const userSchema =  new mongoose.Schema({
     friendships:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:'Friendship'
+            ref:'User'
         }
     ],
     requestsSent:[
@@ -43,7 +43,12 @@ const userSchema =  new mongoose.Schema({
             ref:'User'
         }
     ],
-    progress:{
+    haveSent:{
+        type:Map,
+        of:Boolean,
+        default: () => ({}) //user.progress is null. So we should set a default for mapField.So Mongoose will initialize it to an empty map for us.
+    },
+    haveReceived:{
         type:Map,
         of:Boolean,
         default: () => ({}) //user.progress is null. So we should set a default for mapField.So Mongoose will initialize it to an empty map for us.

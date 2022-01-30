@@ -7,12 +7,14 @@ const queue = require('../config/kue');
 const resetPasswordWorker = require('../workers/reset_password_worker');
 
 module.exports.profile = async function(req,res){
-    let user = await User.findById(req.params.id).populate('progress.$*');
-    let friendshipinProgress = user.progress.get(req.user.id);
+    let user = await User.findById(req.params.id).populate('haveSent.$*').populate('haveReceived.$*');
+    let requestReceived = user.haveSent.get(req.user.id);
+    let requestSent = user.haveReceived.get(req.user.id);
         
     return res.render('profile',{
         profile_user:user,
-        friendshipinProgress:friendshipinProgress
+        requestSent:requestSent,
+        requestReceived:requestReceived
     });
 
 }

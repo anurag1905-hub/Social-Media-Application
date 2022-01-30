@@ -45,7 +45,29 @@
                 </div>  
             </nav>
             <div class="container-fluid">
-                
+                <% for(profile of profiles){ %>
+                    <div class="media border p-3">
+                        <img src="<%=profile.avatar%>" alt="John Doe" class="mr-3 rounded-circle" style="width:60px;height:60px;">
+                        <div class="media-body">
+                            <div class="d-flex">
+                                <div class="p-2 profile-link" style="font-weight:800;font-size:1rem;">
+                                    <a href="/users/profile/<%=profile._id%>" class="p-2"><%=profile.name%></a>
+                                </div>
+                                <div class="ml-auto">
+                                    <div class="d-flex flex-column">
+                                        <div class="p-2 accept-button">
+                                            <a href="/users/friends/acceptRequest/<%=profile._id%>" class="p-2">Accept</a>
+                                        </div>
+                                        <div class="p-2 reject-button">
+                                            <a href="/users/friends/rejectRequest/<%=profile._id%>" class="p-2">Reject</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                <% } %>
             </div>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

@@ -12,12 +12,18 @@ module.exports.users = function(req,res){
     });
 }
 
-module.exports.requestsSent = function(req,res){
-    return res.render('requestsSent');
+module.exports.requestsSent = async function(req,res){
+    let user = await User.findById(req.user._id).populate('requestsSent');
+    return res.render('requestsSent',{
+        profiles:user.requestsSent
+    });
 }
 
-module.exports.requestsReceived = function(req,res){
-    return res.render('requestsReceived');
+module.exports.requestsReceived = async function(req,res){
+    let user = await User.findById(req.user._id).populate('requestsReceived');
+    return res.render('requestsReceived',{
+        profiles:user.requestsReceived
+    });
 }
 
 module.exports.sendRequest = async function(req,res){
@@ -28,13 +34,17 @@ module.exports.sendRequest = async function(req,res){
     }
     else{
         let senderUser = await User.findById(req.user._id);
-        senderUser.requestsSent.push(receiverUser);
         var str1 = req.user.id;
         var str2 = (req.params.id);
-        senderUser.progress.set(str2,true);
+        if(senderUser.haveSent.get(receiverUser)){
+            req.flash('error','Unauthorized');
+            return res.redirect('back');
+        }
+        senderUser.requestsSent.push(receiverUser);
+        senderUser.haveSent.set(str2,true);
         senderUser.save();
         receiverUser.requestsReceived.push(senderUser);
-        receiverUser.progress.set(str1,true);
+        receiverUser.haveReceived.set(str1,true);
         receiverUser.save();
         console.log('Reached till the end');
         return res.redirect('back');

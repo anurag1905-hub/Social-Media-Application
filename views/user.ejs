@@ -50,7 +50,9 @@
                         <img src="<%=profile.avatar%>" alt="John Doe" class="mr-3 rounded-circle" style="width:60px;height:60px;">
                         <div class="media-body">
                             <div class="d-flex">
-                                <div class="p-2" style="font-weight:800;font-size:1rem;"><%=profile.name%></div>
+                                <div class="p-2" style="font-weight:800;font-size:1rem;">
+                                    <a href="/users/profile/<%=profile._id%>" class="p-2"><%=profile.name%></a>
+                                </div>
                                 <div class="ml-auto bg-success">
                                     <a href="/users/profile/<%=profile._id%>" class="p-2">View Profile</a>
                                 </div>

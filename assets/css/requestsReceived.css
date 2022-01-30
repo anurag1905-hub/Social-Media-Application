@@ -21,3 +21,38 @@ body {
 
 .container-fluid {
   margin-top: 5rem; }
+
+.bg-danger a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  width: 100%;
+  height: 100%; }
+  .bg-danger a:hover {
+    color: red;
+    background-color: white;
+    border: 1px solid red; }
+
+.reject-button a {
+  text-decoration: none;
+  color: white;
+  background-color: red;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid red; }
+  .reject-button a:hover {
+    color: red;
+    background-color: white; }
+
+.accept-button a {
+  text-decoration: none;
+  color: white;
+  background-color: green;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid green; }
+  .accept-button a:hover {
+    color: green;
+    background-color: white; }
