@@ -289,3 +289,11 @@ module.exports.changePassword = async function(req,res){
     }
 }
 
+module.exports.display = function(req,res){
+    User.find({},function(err,user){
+        return res.render('user',{
+            profiles:user
+        });
+    });
+}
+

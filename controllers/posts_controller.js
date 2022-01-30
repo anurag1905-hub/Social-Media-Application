@@ -9,9 +9,11 @@ module.exports.create = async function(req,res){
             content:req.body.content,
             user:req.user._id
         });
+        let profileUser = await User.findById(req.user._id);
         let obj = {
             name:req.user.name,
             time:post.createdAt.toDateString(),
+            profileUser:profileUser
         };
         let user = await User.findById(req.user._id);
         user.posts.push(post);

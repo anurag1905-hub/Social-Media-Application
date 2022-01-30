@@ -1,6 +1,7 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const Like = require('../models/like');
+const User = require('../models/user');
 
 const commentEmailWorker = require('../workers/comment_email_worker');
 const queue = require('../config/kue');
@@ -15,7 +16,7 @@ module.exports.create = async function(req,res){
                 user:req.user._id,
                 post:post._id
             });
-
+            let profileUser = await User.findById(req.user._id);
             let job = queue.create('emails',post).save(function(err){
                if(err){
                    console.log('Error in creating a queue');
@@ -27,6 +28,7 @@ module.exports.create = async function(req,res){
             let obj = {
                 name:req.user.name,
                 time:post.createdAt.toDateString(),
+                avatar:profileUser.avatar
             };
             post.comments.push(comment);
             post.save();

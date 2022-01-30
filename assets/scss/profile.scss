@@ -26,7 +26,7 @@ body{
 
 .wrapper{
     height:auto;
-    margin-top:15vh;
+    margin-top:5rem;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -40,8 +40,10 @@ body{
         max-width:600px;
         img{
             margin-top:1rem;
-            width:90%;
-            height:70%;
+            width:30vw;
+            height:50vh;
+            margin-left:1rem;
+            margin-right:1rem;
         }
     }
 }

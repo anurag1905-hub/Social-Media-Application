@@ -66,7 +66,7 @@ class PostComments{
       return $(`<div class="card  comments-list-container comment-group" id="comment-${comment._id}" style="margin-right:0px;margin-bottom:1rem;">
       <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
           <div style="font-weight:700;">
-              ${obj.name}&nbsp;
+              <img src="${obj.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; ${obj.name}&nbsp;
           </div>
           <div>
               ${obj.time}
@@ -167,7 +167,7 @@ class PostComments{
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                 <div style="font-weight:700;">
-                    ${ obj.name }
+                <img src="${obj.profileUser.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; ${ obj.name }
                 </div>
                 <div style="font-weight:750;">
                     ${obj.time}

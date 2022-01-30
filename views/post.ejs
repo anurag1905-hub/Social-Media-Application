@@ -33,6 +33,9 @@
                                 <a class="nav-link" href="/users/friends">FRIENDS</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/users/display">USERS</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/users/messages">MESSAGES</a>
                             </li>
                             <li class="nav-item">
@@ -64,7 +67,7 @@
                                 <div class="card" style="padding:1rem;margin-bottom:2rem;">
                                     <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                                         <div style="font-weight:700;">
-                                            <%= post.user.name %>
+                                            <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%= post.user.name %>
                                         </div>
                                         <div style="font-weight:750;">
                                             <%=post.createdAt.toDateString()%>
@@ -106,7 +109,7 @@
                                                 <div class="card  comments-list-container<%=post._id%> comment-group" id="comment-<%=comment._id%>" style="margin-right:0px;margin-bottom:1rem;">
                                                     <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
                                                         <div style="font-weight:700;">
-                                                            <%=comment.user.name%>&nbsp;
+                                                            <img src="<%=comment.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%=comment.user.name%>&nbsp;
                                                         </div>
                                                         <div>
                                                             <%=comment.createdAt.toDateString()%>

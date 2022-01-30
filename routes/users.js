@@ -9,6 +9,7 @@ router.get('/login',usersController.login);
 router.post('/create',usersController.create);
 router.get('/feed',passport.checkAuthentication,usersController.feed);
 router.get('/posts',passport.checkAuthentication,usersController.posts);
+router.get('/display',passport.checkAuthentication,usersController.display)
 router.get('/friends',passport.checkAuthentication,usersController.friends);
 router.get('/messages',passport.checkAuthentication,usersController.messages);
 router.get('/profile',passport.checkAuthentication,usersController.profile);
