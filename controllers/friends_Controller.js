@@ -34,8 +34,8 @@ module.exports.sendRequest = async function(req,res){
     }
     else{
         let senderUser = await User.findById(req.user._id);
-        var str1 = req.user.id;
-        var str2 = (req.params.id);
+        let str1 = req.user.id;
+        let str2 = (req.params.id);
         if(senderUser.haveSent.get(receiverUser)){
             req.flash('error','Unauthorized');
             return res.redirect('back');
@@ -60,14 +60,34 @@ module.exports.withdrawRequest = async function(req,res){
         return res.redirect('back');
     }
     else{
-        var str1 = req.user.id;
-        var str2 = (req.params.id);
+        let str1 = req.user.id;
+        let str2 = (req.params.id);
         senderUser.haveSent.set(str2,false);
         receiverUser.haveReceived.set(str1,false);
         senderUser.requestsSent.pull(req.params.id);
         receiverUser.requestsReceived.pull(req.user._id);
         senderUser.save();
         receiverUser.save();
+        return res.redirect('back');
     }
-    return res.redirect('back');
+}
+
+module.exports.rejectRequest = async function(req,res){
+    let senderUser = await User.findById(req.params.id);
+    let receiverUser = await User.findById(req.user._id);
+    if(!senderUser){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
+    else{
+        let str1 = req.params.id;
+        let str2 = req.user.id;
+        senderUser.haveSent.set(str2,false);
+        receiverUser.haveReceived.set(str1,false);
+        senderUser.requestsSent.pull(req.user._id);
+        receiverUser.requestsReceived.pull(req.params.id);
+        senderUser.save();
+        receiverUser.save();
+        return res.redirect('back');
+    }
 }
