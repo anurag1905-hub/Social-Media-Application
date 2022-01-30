@@ -51,3 +51,23 @@ module.exports.sendRequest = async function(req,res){
     }
     
 }
+
+module.exports.withdrawRequest = async function(req,res){
+    let senderUser = await User.findById(req.user._id);
+    let receiverUser = await User.findById(req.params.id);
+    if(!receiverUser){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
+    else{
+        var str1 = req.user.id;
+        var str2 = (req.params.id);
+        senderUser.haveSent.set(str2,false);
+        receiverUser.haveReceived.set(str1,false);
+        senderUser.requestsSent.pull(req.params.id);
+        receiverUser.requestsReceived.pull(req.user._id);
+        senderUser.save();
+        receiverUser.save();
+    }
+    return res.redirect('back');
+}
