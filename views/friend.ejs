@@ -45,7 +45,22 @@
                 </div>  
             </nav>
             <div class="container-fluid">
-                
+                <% for(profile of profiles){ %>
+                    <div class="media border p-3">
+                        <img src="<%=profile.avatar%>" alt="profile pic" class="mr-3 rounded-circle" style="width:60px;height:60px;">
+                        <div class="media-body">
+                            <div class="d-flex">
+                                <div class="p-2 profile-link" style="font-weight:800;font-size:1rem;">
+                                    <a href="/users/profile/<%=profile._id%>" class="p-2"><%=profile.name%></a>
+                                </div>
+                                <div class="ml-auto bg-danger">
+                                    <a href="/users/friends/removeFriend/<%=profile._id%>" class="p-2">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                <% } %>
             </div>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

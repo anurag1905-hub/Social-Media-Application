@@ -61,8 +61,10 @@
                             <% } else if(requestReceived) { %>
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger">Reject Friend Request</a>
+                            <% } else if(friends){ %>
+                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger">Remove Friend</a>
                             <% } else { %>
-                               <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success">Send Friend Request</a>
+                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success">Send Friend Request</a>
                             <% } %>
                         </div>
                     </div>

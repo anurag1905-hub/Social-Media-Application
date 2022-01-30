@@ -10,11 +10,13 @@ module.exports.profile = async function(req,res){
     let user = await User.findById(req.params.id).populate('haveSent.$*').populate('haveReceived.$*');
     let requestReceived = user.haveSent.get(req.user.id);
     let requestSent = user.haveReceived.get(req.user.id);
+    let friends = user.areFriends.get(req.user.id);
         
     return res.render('profile',{
         profile_user:user,
         requestSent:requestSent,
-        requestReceived:requestReceived
+        requestReceived:requestReceived,
+        friends:friends
     });
 
 }

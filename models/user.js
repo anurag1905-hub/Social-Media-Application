@@ -46,12 +46,17 @@ const userSchema =  new mongoose.Schema({
     haveSent:{
         type:Map,
         of:Boolean,
-        default: () => ({}) //user.progress is null. So we should set a default for mapField.So Mongoose will initialize it to an empty map for us.
+        default: () => ({}) //user.haveSent is null. So we should set a default for haveSent.So Mongoose will initialize it to an empty map for us.
     },
     haveReceived:{
         type:Map,
         of:Boolean,
-        default: () => ({}) //user.progress is null. So we should set a default for mapField.So Mongoose will initialize it to an empty map for us.
+        default: () => ({}) //user.haveReceived is null. So we should set a default for haveReceived.So Mongoose will initialize it to an empty map for us.
+    },
+    areFriends:{
+        type:Map,
+        of:Boolean,
+        default: () => ({}) //user.areFriends is null. So we should set a default for areFriends.So Mongoose will initialize it to an empty map for us.
     }
 },{
     timestamps:true

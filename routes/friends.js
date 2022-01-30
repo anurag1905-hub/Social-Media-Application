@@ -11,5 +11,6 @@ router.get('/requestsReceived',passport.checkAuthentication,friendsController.re
 router.get('/sendRequest/:id',passport.checkAuthentication,friendsController.sendRequest);
 router.get('/withdrawRequest/:id',passport.checkAuthentication,friendsController.withdrawRequest);
 router.get('/rejectRequest/:id',passport.checkAuthentication,friendsController.rejectRequest);
+router.get('/acceptRequest/:id',passport.checkAuthentication,friendsController.acceptRequest);
 
 module.exports = router;

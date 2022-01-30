@@ -1,7 +1,11 @@
 const User = require('../models/user'); 
 
-module.exports.showFriends = function(req,res){
-    return res.render('friend');
+module.exports.showFriends = async function(req,res){
+    let user = await User.findById(req.user._id).populate('friendships');
+    console.log(user.friendships);
+    return res.render('friend',{
+        profiles:user.friendships
+    });
 }
 
 module.exports.users = function(req,res){
@@ -86,6 +90,30 @@ module.exports.rejectRequest = async function(req,res){
         receiverUser.haveReceived.set(str1,false);
         senderUser.requestsSent.pull(req.user._id);
         receiverUser.requestsReceived.pull(req.params.id);
+        senderUser.save();
+        receiverUser.save();
+        return res.redirect('back');
+    }
+}
+
+module.exports.acceptRequest = async function(req,res){
+    let senderUser = await User.findById(req.params.id);
+    let receiverUser = await User.findById(req.user._id);
+    if(!senderUser){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
+    else{
+        let str1 = req.params.id;
+        let str2 = req.user.id;
+        senderUser.haveSent.set(str2,false);
+        receiverUser.haveReceived.set(str1,false);
+        senderUser.requestsSent.pull(req.user._id);
+        receiverUser.requestsReceived.pull(req.params.id);
+        senderUser.friendships.push(req.user._id);
+        receiverUser.friendships.push(req.params.id);
+        senderUser.areFriends.set(str2,true);
+        receiverUser.areFriends.set(str1,true);
         senderUser.save();
         receiverUser.save();
         return res.redirect('back');
