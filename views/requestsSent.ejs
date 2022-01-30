@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="/css/request.css">
+        <link rel="stylesheet" type="text/css" href="/css/requestsSent.css">
     </head>
     <body>
         <div class="container-fluid" style="padding:0px;margin:0px;">
@@ -19,7 +19,10 @@
                     <ul class="navbar-nav">
                         <% if(locals.user) {%>
                             <li class="nav-item active">
-                                <a class="nav-link" href="/users/friends/requests">FRIEND REQUESTS</a>
+                                <a class="nav-link" href="/users/friends/requestsSent">REQUESTS SENT</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/friends/requestsReceived">REQUESTS RECEIVED</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/users/friends/showFriends">ALL FRIENDS</a>

@@ -6,54 +6,54 @@ const jwt = require('jsonwebtoken');  // Used to generate the token.
 const queue = require('../config/kue');
 const resetPasswordWorker = require('../workers/reset_password_worker');
 
-module.exports.profile = function(req,res){
-    User.findById(req.params.id,function(err,user){
-        if(err){
-            console.log('Error in finding the user');
-            return res.redirect('back');
-        }
-        if(user){
-            return res.render('profile',{
-               profile_user:user
-            });
-        }
-        else{
-            return res.redirect('back');
-        }
+module.exports.profile = async function(req,res){
+    let user = await User.findById(req.params.id).populate('progress.$*');
+    let friendshipinProgress = user.progress.get(req.user.id);
+        
+    return res.render('profile',{
+        profile_user:user,
+        friendshipinProgress:friendshipinProgress
     });
+
 }
 
-module.exports.update = async function(req,res){
+module.exports.update = async function(req,res) {
     try{
         if(req.user.id==req.params.id){
-            let user = await User.findById(req.user._id);
+            let user = await User.findById(req.params.id);
             User.uploadedAvatar(req,res,function(err){
-               if(err){
-                   console.log('************Multer Error:',err);
-                   return res.redirect('back');
-               }
-               user.name = req.body.name;
-               user.email = req.body.email;
-               if(req.file){
-
-                   if(user.avatar){
-                      fs.unlinkSync(path.join(__dirname,'..',user.avatar));
-                   }                
-                   // this is saving the path of the uploaded file into the avatar field of the user.
-                   user.avatar = User.avatarPath + '/' + req.file.filename;
-               }
-               user.save();
+                if(err){
+                    console.log('****Multer Error:',err);
+                    req.flash('error','Unable to update Profile');
+                    return res.redirect('back');
+                }
+                //We are able to read req.body.name because of multer. Otherwise our form consists of multipart data and we won't be able to access it.
+                user.name = req.body.name;
+                user.email = req.body.email;
+                if(req.file){
+                    if(user.avatar){
+                        //If the user already has an avatar, remove it.
+                        const p = path.join(__dirname,'..',user.avatar);
+                       if(fs.existsSync(p)){
+                          //If the file exists, remove it.
+                       fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                       }
+                    }
+                    //this is saving the path of the uploaded file into the avatar field in the user.
+                    user.avatar= User.avatarPath+'/'+req.file.filename;
+                }
+                user.save();
+                req.flash('success','Profile Updated');
+                return res.redirect(`../../users/profile/${req.user._id}`);
             });
-            req.flash('success','Updated');
-            return res.redirect('back');
         }
         else{
-            req.flash('error','Unauthorized');
-            return res.status(401).send('Unauthorized');
+            req.flash('error','Unable to update Profile');
+            return res.redirect('back');
         }
     }catch(err){
-        req.flash('error','Error');
-        return res.redirect('/user/profile');
+        req.flash('error','Unable to update Profile');
+        return res.redirect('back');
     }
 }
 
@@ -163,46 +163,6 @@ module.exports.editProfile = function(req,res){
             profile_user:user
         });
     });
-}
-
-module.exports.update = async function(req,res) {
-    try{
-        if(req.user.id==req.params.id){
-            let user = await User.findById(req.params.id);
-            User.uploadedAvatar(req,res,function(err){
-                if(err){
-                    console.log('****Multer Error:',err);
-                    req.flash('error','Unable to update Profile');
-                    return res.redirect('back');
-                }
-                //We are able to read req.body.name because of multer. Otherwise our form consists of multipart data and we won't be able to access it.
-                user.name = req.body.name;
-                user.email = req.body.email;
-                if(req.file){
-                    if(user.avatar){
-                        //If the user already has an avatar, remove it.
-                        const p = path.join(__dirname,'..',user.avatar);
-                       if(fs.existsSync(p)){
-                          //If the file exists, remove it.
-                       fs.unlinkSync(path.join(__dirname,'..',user.avatar));
-                       }
-                    }
-                    //this is saving the path of the uploaded file into the avatar field in the user.
-                    user.avatar= User.avatarPath+'/'+req.file.filename;
-                }
-                user.save();
-                req.flash('success','Profile Updated');
-                return res.redirect('/users/profile/');
-            });
-        }
-        else{
-            req.flash('error','Unable to update Profile');
-            return res.redirect('back');
-        }
-    }catch(err){
-        req.flash('error','Unable to update Profile');
-        return res.redirect('back');
-    }
 }
 
 module.exports.reset = function(req,res){
