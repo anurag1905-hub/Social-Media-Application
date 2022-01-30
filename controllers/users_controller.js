@@ -7,7 +7,7 @@ const queue = require('../config/kue');
 const resetPasswordWorker = require('../workers/reset_password_worker');
 
 module.exports.profile = function(req,res){
-    User.findById(req.user,function(err,user){
+    User.findById(req.params.id,function(err,user){
         if(err){
             console.log('Error in finding the user');
             return res.redirect('back');
@@ -287,13 +287,5 @@ module.exports.changePassword = async function(req,res){
     else{
          return res.send('Invalid or Expired Token');
     }
-}
-
-module.exports.display = function(req,res){
-    User.find({},function(err,user){
-        return res.render('user',{
-            profiles:user
-        });
-    });
 }
 

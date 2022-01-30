@@ -7,37 +7,28 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="/css/message.css">
+        <link rel="stylesheet" type="text/css" href="/css/request.css">
     </head>
     <body>
-        <div class="container mt-3">
-            <div class="container-fluid text-center bg-dark py-1 header">
-                <p class="text-warning heading p-0 m-0">Social Media Application</p>
-            </div>
-            <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <div class="container-fluid" style="padding:0px;margin:0px;">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/users/feed">FEED</a>
-                        </li>
                         <% if(locals.user) {%>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/users/profile/<%=locals.user._id%>">PROFILE</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/users/posts">POSTS</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/users/friends/showFriends">FRIENDS</a>
-                            </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="/users/messages">MESSAGES</a>
+                                <a class="nav-link" href="/users/friends/requests">FRIEND REQUESTS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/users/logout">LOGOUT</a>
+                                <a class="nav-link" href="/users/friends/showFriends">ALL FRIENDS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/friends/suggestions">SUGGESTIONS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/feed">HOME</a>
                             </li>
                         <% } else {%>
                             <li class="nav-item">
@@ -50,13 +41,8 @@
                     </ul>
                 </div>  
             </nav>
-            <div class="container-fluid box">
-                <div class="message-header">
-                    MESSAGES:
-                </div>
-                <div class="message-box">
-                    
-                </div>
+            <div class="container-fluid">
+                
             </div>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

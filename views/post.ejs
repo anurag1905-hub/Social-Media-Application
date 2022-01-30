@@ -24,16 +24,13 @@
                         </li>
                         <% if(locals.user) {%>
                             <li class="nav-item">
-                                <a class="nav-link" href="/users/profile">PROFILE</a>
+                                <a class="nav-link" href="/users/profile/<%=locals.user._id%>">PROFILE</a>
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="/users/posts">POSTS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/users/friends">FRIENDS</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/users/display">USERS</a>
+                                <a class="nav-link" href="/users/friends/showFriends">FRIENDS</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/users/messages">MESSAGES</a>
