@@ -5,6 +5,7 @@ html{
 body{
     margin: 0px;
     padding: 0px;
+    background-image: url("/images/authentication_background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -22,4 +23,65 @@ body{
 .navbar-item{
     background-color:orange;
     border-right:4px solid red;
+}
+
+.box{
+    height:auto;
+    min-height:70vh;
+    margin:0px;
+}
+
+.flex-wrapper{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.posts-footer{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    div{
+        a {
+            font-size:1rem;
+
+            &:hover{
+                text-decoration:none;
+                color:blue;
+            }
+        }
+        
+    }
+}
+
+.comments-footer{
+    display:flex;
+    flex-direction:column;
+    div{
+        a {
+            font-size:1rem;
+        }
+        
+    }
+}
+
+a {
+    i{
+        &:hover{
+            color:red;
+        }
+    }
+}
+
+#delete{
+
+    display:flex;
+    justify-content: space-between;
+    a{
+
+        &:hover{
+            color:red;
+            text-decoration:none;
+        }
+    }
 }

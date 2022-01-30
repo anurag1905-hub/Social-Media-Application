@@ -99,8 +99,41 @@ module.exports.create = function(req,res){
     });
 }
 
-module.exports.feed = function (req,res){
-    return res.render('feed');
+module.exports.feed = async function (req,res){
+    let user = await User.findById(req.user._id)
+    .populate({
+        path:'friendships',
+        populate:[
+            {
+                path:'posts',
+                populate:[
+                    {
+                        path:'comments',
+                        populate:[
+                            {
+                                path:'user'
+                            },
+                            {
+                                path:'likes'
+                            }
+                        ],
+                    },
+                    {
+                        path:'user'
+                    },
+                    {
+                        path:'likes'
+                    }
+                ],
+                options:{
+                    sort:{createdAt:-1},
+                }
+            }
+        ]
+    });
+    return res.render('feed',{
+        friends:user.friendships
+    });
 }
 
 module.exports.posts = async function (req,res){
