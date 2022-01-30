@@ -2,7 +2,6 @@ const User = require('../models/user');
 
 module.exports.showFriends = async function(req,res){
     let user = await User.findById(req.user._id).populate('friendships');
-    console.log(user.friendships);
     return res.render('friend',{
         profiles:user.friendships
     });
@@ -116,6 +115,26 @@ module.exports.acceptRequest = async function(req,res){
         receiverUser.areFriends.set(str1,true);
         senderUser.save();
         receiverUser.save();
+        return res.redirect('back');
+    }
+}
+
+module.exports.removeFriend = async function(req,res){
+    let firstUser = await User.findById(req.user._id);
+    let secondUser = await User.findById(req.params.id);
+    if(!secondUser){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
+    else{
+        firstUser.friendships.pull(req.params.id);
+        secondUser.friendships.pull(req.user._id);
+        let str1 = req.params.id;
+        let str2 = req.user.id;
+        firstUser.areFriends.set(str1,false);
+        secondUser.areFriends.set(str2,false);
+        firstUser.save();
+        secondUser.save();
         return res.redirect('back');
     }
 }
