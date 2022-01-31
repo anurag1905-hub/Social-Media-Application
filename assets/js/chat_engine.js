@@ -1,9 +1,9 @@
 class ChatEngine{
-    constructor(chatBoxId,userEmail,chatRoom){
+    constructor(chatBoxId,userEmail,chatRoom,sender){
         this.chatBox=$(`#${chatBoxId}`);
         this.userEmail=userEmail;
         this.chatRoom = chatRoom;
-
+        this.sender = sender;
         //this.socket = io.connect('http://localhost:5000');
         this.socket=io('http://localhost:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
         if(this.userEmail){
@@ -34,7 +34,8 @@ class ChatEngine{
                     self.socket.emit('send_message', {
                         message: msg,
                         user_email: self.userEmail,
-                        chatroom: self.chatRoom
+                        chatroom: self.chatRoom,
+                        sender:self.sender,
                     });
                 }
             });

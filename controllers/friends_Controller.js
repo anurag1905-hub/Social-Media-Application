@@ -1,5 +1,6 @@
 const User = require('../models/user'); 
 const Friendship = require('../models/friendship');
+const Message = require('../models/message');
 
 module.exports.showFriends = async function(req,res){
     let user = await User.findById(req.user._id).populate('friendships');
@@ -157,21 +158,25 @@ module.exports.removeFriend = async function(req,res){
 module.exports.sendMessage = async function(req,res){
     let firstUser = await User.findById(req.user._id);
     let secondUser = await User.findById(req.params.id);
-    let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser});
+    let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser}).populate('messages');
     if(!friendship){
-        friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser});
+        friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser}).populate('messages');
         if(!friendship){
             return res.redirect('back');
         }
         else{
+            console.log(friendship);
             return res.render('chat_box',{
-                friendship:friendship
+                friendship:friendship,
+                messages:friendship.messages
             });
         }
     }
     else{
+        console.log(friendship);
         return res.render('chat_box',{
-            friendship:friendship
+            friendship:friendship,
+            messages:friendship.messages
         });
     }
 }

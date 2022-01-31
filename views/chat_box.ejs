@@ -7,15 +7,21 @@
 <body>
     <div id="user-chat-box">
         <ul id="chat-messages-list">
-            <li class="other-message">
-                <span>Other Message</span>
-            </li>
-            <li class="self-message">
-                <span>
-                    Self Message
-                </span>
-                
-            </li>
+            <% if(messages) { %>
+                <% for (message of messages) { %>
+                    <% if(message.sender==locals.user.id) { %>
+                        <li class="self-message">
+                            <span>
+                                <%=message.content%>
+                            </span>  
+                        </li>
+                    <% } else { %>
+                        <li class="other-message">
+                            <span><%=message.content%></span>
+                        </li>
+                    <% } %>
+                <% } %>
+            <% } %>
     
         </ul>
         <div id="chat-message-input-container">
@@ -28,6 +34,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script src="/js/chat_engine.js"></script>
     <script>
-        new ChatEngine('user-chat-box','<%=locals.user.email%>','<%=friendship._id%>')
+        new ChatEngine('user-chat-box','<%=locals.user.email%>','<%=friendship._id%>','<%=locals.user._id%>')
     </script>
 </body>
