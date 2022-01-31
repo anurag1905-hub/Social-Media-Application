@@ -1,3 +1,17 @@
+jQuery.fn.scrollTo = function(elem) {
+    //Reference: https://stackoverflow.com/questions/54768752/autoscroll-div-when-content-is-added
+    if( this[0].scrollTop > this[0].scrollHeight - this[0].offsetHeight - $(elem).height() - 10) {
+        $(this).scrollTop($(this).scrollTop() - $(this).offset().top + $(elem).offset().top);
+    }
+    return this; 
+};
+
+function gotoBottom(id){
+    var element = $(`#${id}`);
+    var height = element.prop('scrollHeight');
+    element.animate({scrollTop: height},0);
+ }
+
 class ChatEngine{
     constructor(chatBoxId,userEmail,chatRoom,sender){
         this.chatBox=$(`#${chatBoxId}`);
@@ -9,6 +23,8 @@ class ChatEngine{
         if(this.userEmail){
             this.connectionHandler();
         }
+ 
+        gotoBottom('chat-messages-list');
     }
 
     connectionHandler(){
@@ -58,7 +74,7 @@ class ChatEngine{
     
                 newMessage.addClass(messageType);
     
-                $('#chat-messages-list').append(newMessage);
+                $('#chat-messages-list').append(newMessage).scrollTo(newMessage);
             })
 
         });

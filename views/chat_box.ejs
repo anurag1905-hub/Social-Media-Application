@@ -6,6 +6,14 @@
 </html>
 <body>
     <div id="user-chat-box">
+        <div class="flex-wrapper" style="height:3rem;background-color: lightblue;">
+            <div>
+                <img src="<%=profileUser.avatar%>" width="30" height="30">
+            </div>
+            <div class="text">
+                <a href="/users/profile/<%=profileUser._id%>"><%=profileUser.name%></a>
+            </div>
+        </div>
         <ul id="chat-messages-list">
             <% if(messages) { %>
                 <% for (message of messages) { %>

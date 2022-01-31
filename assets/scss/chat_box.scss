@@ -1,10 +1,40 @@
+html{
+	font-size:16px;
+}
+
 #user-chat-box{
+
+	.flex-wrapper{
+		display:flex;
+    	flex-direction:row;
+    	justify-content:flex-start;
+
+		img{
+			border-radius:50%;
+			margin-top:0.5rem;
+			margin-left:1rem;
+			margin-right:1rem;
+		}
+
+		.text{
+			font-weight:700;
+			margin-top:0.8rem;
+
+			a{
+				text-decoration:none;
+				display:block;
+				width:100%;
+				height:100%;
+			}
+		}
+	}
+
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    border: 1px dashed grey;
-    height: 350px;
-	width: 300px;
+	left:50%;
+	top:50%;
+    height: 95vh;
+	width: 95vw;
+	transform: translate(-50%,-50%);
 	background: white;
 	padding: 5px;
 	box-shadow: 1px 1px 1px 1px lightgrey;
@@ -12,7 +42,7 @@
     #chat-messages-list{
     	list-style: none;
 	    padding: 10px;
-	    height: 70%;
+	    height: 65%;
 	    background-color: white;
 	    overflow: auto;
 
@@ -41,6 +71,19 @@
 	    }
 
     }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+	#chat-messages-list::-webkit-scrollbar {
+		display: none;
+	}
+	  
+	/* Hide scrollbar for IE, Edge and Firefox */
+	#chat-messages-list {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+	}
+
+
     #chat-message-input-container{
     	    height: 24%;
 		    width: 100%;
@@ -48,17 +91,22 @@
 		    flex-direction: row;
 
 		    #chat-message-input{
-	    	    height: 50%;
+	    	    height: 49%;
     			width: 70%;
 		    }
 
 		    #send-message{
-	    	    height: 50%;
+	    	    height: 53%;
 			    width: 30%;
 			    font-size: 25px;
-			    color: white;
+			    color: green;
 			    border: none;
-			    background: #58d258;
+			    background-color:white;
+				border:1px solid green;
+				&:hover{
+					color:white;
+					background-color:green;
+				}
 		    }
 	    }
 }

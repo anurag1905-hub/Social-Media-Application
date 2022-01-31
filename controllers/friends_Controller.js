@@ -168,7 +168,8 @@ module.exports.sendMessage = async function(req,res){
             console.log(friendship);
             return res.render('chat_box',{
                 friendship:friendship,
-                messages:friendship.messages
+                messages:friendship.messages,
+                profileUser:secondUser
             });
         }
     }
@@ -176,7 +177,8 @@ module.exports.sendMessage = async function(req,res){
         console.log(friendship);
         return res.render('chat_box',{
             friendship:friendship,
-            messages:friendship.messages
+            messages:friendship.messages,
+            profileUser:secondUser
         });
     }
 }
