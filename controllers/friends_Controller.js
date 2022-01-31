@@ -1,4 +1,5 @@
 const User = require('../models/user'); 
+const Friendship = require('../models/friendship');
 
 module.exports.showFriends = async function(req,res){
     let user = await User.findById(req.user._id).populate('friendships');
@@ -115,6 +116,10 @@ module.exports.acceptRequest = async function(req,res){
         receiverUser.areFriends.set(str1,true);
         senderUser.save();
         receiverUser.save();
+        await Friendship.create({
+            from_user:senderUser,
+            to_user:receiverUser 
+        });
         return res.redirect('back');
     }
 }
@@ -135,6 +140,38 @@ module.exports.removeFriend = async function(req,res){
         secondUser.areFriends.set(str2,false);
         firstUser.save();
         secondUser.save();
+        let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser});
+        console.log(friendship);
+        if(friendship){
+            friendship.remove();
+        }
+        else{
+            friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser});
+            console.log(friendship);
+            friendship.remove();
+        }
         return res.redirect('back');
+    }
+}
+
+module.exports.sendMessage = async function(req,res){
+    let firstUser = await User.findById(req.user._id);
+    let secondUser = await User.findById(req.params.id);
+    let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser});
+    if(!friendship){
+        friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser});
+        if(!friendship){
+            return res.redirect('back');
+        }
+        else{
+            return res.render('chat_box',{
+                friendship:friendship
+            });
+        }
+    }
+    else{
+        return res.render('chat_box',{
+            friendship:friendship
+        });
     }
 }

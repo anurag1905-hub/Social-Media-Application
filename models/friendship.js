@@ -17,4 +17,4 @@ const friendshipSchema = new mongoose.Schema({
 
 const Friendship = mongoose.model('Friendship',friendshipSchema);
 
-mongoose.exports = Friendship;
+module.exports = Friendship;

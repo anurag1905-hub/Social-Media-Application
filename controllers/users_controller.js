@@ -177,8 +177,11 @@ module.exports.friends = function(req,res){
     return res.render('friend');
 }
 
-module.exports.messages = function(req,res){
-    return res.render('message');
+module.exports.messages = async function(req,res){
+    let user = await User.findById(req.user._id).populate('friendships');
+    return res.render('message',{
+        profiles:user.friendships
+    });
 }
 
 //sign in and create a session for the user.
@@ -191,7 +194,7 @@ module.exports.createSession = function(req,res){
 module.exports.destroySession = function(req,res){
     req.logout();
     req.flash('success','Logged out Successfully');
-    return res.redirect('/');
+    return res.redirect('/users/login');
 }
 
 module.exports.editProfile = function(req,res){
@@ -284,5 +287,9 @@ module.exports.changePassword = async function(req,res){
     else{
          return res.send('Invalid or Expired Token');
     }
+}
+
+module.exports.chatbox = function(req,res){
+    return res.render('chat_box');
 }
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/chat_box.css">
+    </head>
+</html>
+<body>
+    <div id="user-chat-box">
+        <ul id="chat-messages-list">
+            <li class="other-message">
+                <span>Other Message</span>
+            </li>
+            <li class="self-message">
+                <span>
+                    Self Message
+                </span>
+                
+            </li>
+    
+        </ul>
+        <div id="chat-message-input-container">
+            <input id="chat-message-input" placeholder="Type message here">
+            <button id="send-message">Send</button>
+        </div>
+    
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script src="/js/chat_engine.js"></script>
+    <script>
+        new ChatEngine('user-chat-box','<%=locals.user.email%>','<%=friendship._id%>')
+    </script>
+</body>
