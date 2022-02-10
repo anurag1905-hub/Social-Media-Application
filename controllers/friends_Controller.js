@@ -84,7 +84,7 @@ module.exports.withdrawRequest = async function(req,res){
         if(req.xhr){
             return res.status(200).json({
                 data:{
-                    receiverUser:receiverUser,
+                    profile:receiverUser
                 },
                 message:"Request Withdrawn"
             });
@@ -94,7 +94,6 @@ module.exports.withdrawRequest = async function(req,res){
 }
 
 module.exports.rejectRequest = async function(req,res){
-    console.log('Herreeeeee');
     let senderUser = await User.findById(req.params.id);
     let receiverUser = await User.findById(req.user._id);
     if(!senderUser){
@@ -110,6 +109,14 @@ module.exports.rejectRequest = async function(req,res){
         receiverUser.requestsReceived.pull(req.params.id);
         senderUser.save();
         receiverUser.save();
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    profile:req.params.id
+                },
+                message:"Request Rejected"
+            });
+        }
         return res.redirect('back');
     }
 }
@@ -141,7 +148,7 @@ module.exports.acceptRequest = async function(req,res){
         if(req.xhr){
             return res.status(200).json({
                 data:{
-                    receiverUser:receiverUser,
+                    profile:req.params.id
                 },
                 message:"Request Accepted"
             });
@@ -150,7 +157,7 @@ module.exports.acceptRequest = async function(req,res){
     }
 }
 
-module.exports.removeFriend = async function(req,res){
+module.exports.removeFriend = async function(req,res){       
     let firstUser = await User.findById(req.user._id);
     let secondUser = await User.findById(req.params.id);
     if(!secondUser){
@@ -178,6 +185,15 @@ module.exports.removeFriend = async function(req,res){
             friendship.remove();
             await Message.deleteMany({friendship:friendship});
         }
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    profile:req.params.id
+                },
+                message:"Removed from Friends"
+            });
+        }
+
         return res.redirect('back');
     }
 }

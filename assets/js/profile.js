@@ -73,7 +73,26 @@
             });
         });
     }
+
+    function removeFriend(){
+        $('.remove-friend').click(function(event){
+           event.preventDefault();
+           console.log('Friend Removal Prevented');
+           console.log($(this).prop('href'));
+            $.ajax({
+                type:'get',
+                url:$(this).prop('href'),
+                success:function(data){
+                    $('.remove-friend').text("Friend Removed")
+                    $('.remove-friend').attr("href","#");
+                },error:function(err){
+                    console.log('Error')
+                }
+            });
+        });
+    }
     
+    removeFriend();
     rejectFriendRequest();
     acceptFriendRequest();
     withdrawFriendRequest();

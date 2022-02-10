@@ -62,7 +62,7 @@
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
                             <% } else if(friends){ %>
-                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger ">Remove Friend</a>
+                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend">Remove Friend</a>
                             <% } else { %>
                                 <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request">Send Friend Request</a>
                             <% } %>
@@ -71,9 +71,9 @@
                 </div>
             </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    <script src="/js/friendship.js"></script>
+    <script src="/js/profile.js"></script>
     <script>
         <% if(flash.success&&flash.success.length>0) { %>
             new Noty({
