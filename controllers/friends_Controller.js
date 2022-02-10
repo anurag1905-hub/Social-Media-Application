@@ -57,7 +57,7 @@ module.exports.sendRequest = async function(req,res){
                 data:{
                     receiverUser:receiverUser,
                 },
-                message:"Post removed"
+                message:"Request Sent"
             });
         }
         return res.redirect('back');
@@ -86,7 +86,7 @@ module.exports.withdrawRequest = async function(req,res){
                 data:{
                     receiverUser:receiverUser,
                 },
-                message:"Post removed"
+                message:"Request Withdrawn"
             });
         }
         return res.redirect('back');
@@ -94,6 +94,7 @@ module.exports.withdrawRequest = async function(req,res){
 }
 
 module.exports.rejectRequest = async function(req,res){
+    console.log('Herreeeeee');
     let senderUser = await User.findById(req.params.id);
     let receiverUser = await User.findById(req.user._id);
     if(!senderUser){
@@ -137,6 +138,14 @@ module.exports.acceptRequest = async function(req,res){
             from_user:senderUser,
             to_user:receiverUser 
         });
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    receiverUser:receiverUser,
+                },
+                message:"Request Accepted"
+            });
+        }
         return res.redirect('back');
     }
 }

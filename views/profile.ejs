@@ -59,8 +59,8 @@
                             <%} else if(requestSent) {%>
                                <a href="/users/friends/withdrawRequest/<%=profile_user.id%>" class="btn btn-danger withdraw-friend-request">Withdraw Friend Request</a>
                             <% } else if(requestReceived) { %>
-                               <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success ">Accept Friend Request</a>
-                               <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger ">Reject Friend Request</a>
+                               <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
+                               <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
                             <% } else if(friends){ %>
                                <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger ">Remove Friend</a>
                             <% } else { %>
