@@ -52,6 +52,14 @@ module.exports.sendRequest = async function(req,res){
         receiverUser.haveReceived.set(str1,true);
         receiverUser.save();
         console.log('Reached till the end');
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    receiverUser:receiverUser,
+                },
+                message:"Post removed"
+            });
+        }
         return res.redirect('back');
     }
     
@@ -73,6 +81,14 @@ module.exports.withdrawRequest = async function(req,res){
         receiverUser.requestsReceived.pull(req.user._id);
         senderUser.save();
         receiverUser.save();
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    receiverUser:receiverUser,
+                },
+                message:"Post removed"
+            });
+        }
         return res.redirect('back');
     }
 }
@@ -145,11 +161,13 @@ module.exports.removeFriend = async function(req,res){
         console.log(friendship);
         if(friendship){
             friendship.remove();
+            await Message.deleteMany({friendship:friendship});
         }
         else{
             friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser});
             console.log(friendship);
             friendship.remove();
+            await Message.deleteMany({friendship:friendship});
         }
         return res.redirect('back');
     }
