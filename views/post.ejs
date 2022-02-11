@@ -52,7 +52,7 @@
             <div class="container-fluid box" style="padding:0px;margin:0px;">
                 <div class="post-box">
                     <form action="/posts/create" id="new-post-form" method="post">
-                        <textarea name="content" class="form-control" style="margin-bottom:1rem;resize:none;" rows="5" placeholder="Type Here.." required></textarea>
+                        <textarea name="content" class="form-control post-content-input" style="margin-bottom:1rem;resize:none;" rows="5" placeholder="Type Here.." required></textarea>
                         <button type="submit" class="btn btn-success" style="width:6rem;">Add Post</button>
                     </form>
                     <br><br>
@@ -77,7 +77,7 @@
                                         <div class="posts-footer">
                                             <div>
                                                 <a class="toggle-like-button" data-likes="<%=post.likes.length%>" href="/likes/toggle/?id=<%=post._id%>&type=Post">Like <span class="badge badge-info"><%=post.likes.length%></span></a>
-                                                <a data-toggle="collapse" class="toggle-comments-button" data-likes="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
+                                                <a data-toggle="collapse" class="toggle-comments-button-<%=post._id%>" data-comments="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
                                             </div>
                                             <div id="delete">
                                                 <% if(locals.user&&(locals.user.id==post.user.id)){%>
@@ -91,7 +91,7 @@
                     
                                         <form action="/comments/create/" method="post" class="post-<%=post._id%>-comments-form" style="margin-top:1rem;margin-bottom:1rem;">
                                             <div class="form-group">
-                                                <input type="text" name="content" class="form-control" placeholder="Add a comment" required>
+                                                <input type="text" name="content" class="form-control comment-content-input-<%=post._id%>" placeholder="Add a comment" required>
                                             </div>
                                             <div class="form-group">
                                                 <input type="hidden" name="post" value="<%=post._id%>">
