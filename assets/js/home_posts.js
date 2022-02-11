@@ -18,7 +18,7 @@ class PostComments{
         // console.log($(this.postContainer).find('.delete-comment-button').length);
             $(this.postContainer).find('.delete-comment-button').each(function(){
                // console.log('FFFF');
-                self.deleteComment($(this));
+                self.deleteComment($(this),postId);
             });
      }
   
@@ -32,18 +32,21 @@ class PostComments{
               url: '/comments/create',
               data: $(self).serialize(),
               success: function(data){
-                let commentsCount = parseInt($('.toggle-comments-button').attr('data-likes'));
+                let commentsCount = parseInt($(`.toggle-comments-button-${postId}`).attr('data-comments'));
                 commentsCount+=1;
-                $('.toggle-comments-button').attr('data-likes',commentsCount);
-                $('.toggle-comments-button').children().html(`${commentsCount}`);
+                $(`.toggle-comments-button-${postId}`).attr('data-comments',commentsCount);
+                $(`.toggle-comments-button-${postId}`).children().html(`${commentsCount}`);
 
                 let newComment = pSelf.newCommentDom(data.data.obj,data.data.comment);
 
                 new ToggleLike($(' .toggle-like-button', newComment));
 
                 $(`.comments-section${postId}`).append(newComment);
-                pSelf.deleteComment($(' .delete-comment-button', newComment));
-                console.log($(' .delete-comment-button', newComment));
+                pSelf.deleteComment($(' .delete-comment-button', newComment),postId);
+                //console.log($(' .delete-comment-button', newComment));
+
+                $(`.comment-content-input-${postId}`).val("");
+
                 new Noty({
                     theme: 'relax',
                     text: "Comment published!",
@@ -88,7 +91,7 @@ class PostComments{
   </div>`);
   }
   
-  deleteComment(deleteLink){
+  deleteComment(deleteLink,postId){
       console.log('Reached');
       $(deleteLink).click(function(e){
         console.log('prevented');
@@ -98,10 +101,10 @@ class PostComments{
               url: $(deleteLink).prop('href'),
               success: function(data){
                 console.log('DELETED');
-                 let commentsCount = parseInt($('.toggle-comments-button').attr('data-likes'));
+                 let commentsCount = parseInt($(`.toggle-comments-button-${postId}`).attr('data-comments'));
                  commentsCount-=1;
-                 $('.toggle-comments-button').attr('data-likes',commentsCount);
-                 $('.toggle-comments-button').children().html(`${commentsCount}`);
+                 $(`.toggle-comments-button-${postId}`).attr('data-comments',commentsCount);
+                 $(`.toggle-comments-button-${postId}`).children().html(`${commentsCount}`);
                   $(`#comment-${data.data.comment_id}`).remove();
                   new Noty({
                       theme: 'relax',
@@ -145,6 +148,8 @@ class PostComments{
 
                     new ToggleLike($(' .toggle-like-button', newPost));
 
+                    $('.post-content-input').val("");
+
                     new Noty({
                         theme: 'relax',
                         text: "Post published!",
@@ -163,6 +168,7 @@ class PostComments{
 
      // method to create a post in DOM
      let newPostDom = function(post,obj){
+         console.log(post);
         return $(`<div class="container-fluid" id="post-${post._id}" style="padding:0px;">
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
@@ -180,7 +186,7 @@ class PostComments{
                 <div class="posts-footer">
                     <div>
                         <a class="toggle-like-button" data-likes=${post.likes.length} href="/likes/toggle/?id=${post._id}&&type=Post">Like <span class="badge badge-info">${post.likes.length}</span></a>
-                        <a data-toggle="collapse" class="toggle-comments-button" data-likes="${post.comments.length}"  href="#collapse${post.id}">Comments <span class="badge badge-info">${post.comments.length}</span></a><br>
+                        <a data-toggle="collapse" class="toggle-comments-button-${post._id}" data-comments="${post.comments.length}"  href="#collapse${post.id}">Comments <span class="badge badge-info">${post.comments.length}</span></a><br>
                     </div>
 
                     <div id="delete">
@@ -193,7 +199,7 @@ class PostComments{
 
                 <form action="/comments/create/" method="post" class="post-${post._id}-comments-form" style="margin-top:1rem;margin-bottom:1rem;">
                     <div class="form-group">
-                        <input type="text" name="content" class="form-control" placeholder="Add a comment" required>
+                        <input type="text" name="content" class="form-control comment-content-input-${post._id}" placeholder="Add a comment" required>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="post" value="${post._id}">
