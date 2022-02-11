@@ -11,12 +11,40 @@ module.exports.profile = async function(req,res){
     let requestReceived = user.haveSent.get(req.user.id);
     let requestSent = user.haveReceived.get(req.user.id);
     let friends = user.areFriends.get(req.user.id);
+
+    let profileUser = await User.findById(req.params.id)
+    .populate({
+        path:'posts',
+        populate:[
+            {
+                    path:'comments',
+                    populate:[
+                    {
+                        path:'user'
+                    },
+                    {
+                        path:'likes'
+                    }
+                    ],
+            },
+            {
+                    path:'user'
+            },
+            {
+                    path:'likes'
+            }
+        ],
+        options:{
+            sort:{createdAt:-1},
+        }
+    });
         
     return res.render('profile',{
         profile_user:user,
         requestSent:requestSent,
         requestReceived:requestReceived,
-        friends:friends
+        friends:friends,
+        profileUser:profileUser
     });
 
 }

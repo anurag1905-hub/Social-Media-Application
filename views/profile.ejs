@@ -7,13 +7,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="/css/profile.css">
     </head>
     <body>
         <div class="container-fluid" style="padding:0px;margin:0px;">
             <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
@@ -38,7 +39,7 @@
                             </li>
                         <% } else {%>
                             <li class="nav-item">
-                                    <a class="nav-link" href="/users/login">LOGIN</a>
+                                <a class="nav-link" href="/users/login">LOGIN</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/users/signup">SIGNUP</a>
@@ -52,8 +53,6 @@
                     <div class="card profile-container">
                         <img class="card-img-top" src="<%=profile_user.avatar%>" alt="Profile Picture">
                         <div class="card-body">
-                            <h4 class="card-title">Name-<%=profile_user.name%></h4>
-                            <p class="card-text">Email-<%=profile_user.email%></p>
                             <%if(locals.user.id==profile_user.id){%>
                                <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-success">Edit Profile</a>
                             <%} else if(requestSent) {%>
@@ -62,18 +61,113 @@
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
                             <% } else if(friends){ %>
-                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend">Remove Friend</a>
+                               <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-success">View Friends</a>
+                               <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-danger">Remove Friend</a>                       
                             <% } else { %>
-                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request">Send Friend Request</a>
+                               <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request">Send Friend Request</a>
                             <% } %>
                         </div>
                     </div>
-                </div>
+                    <div class="posts-container">
+                        <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;">
+                        <% if(profileUser.posts.length) { %>
+                            <div class="text">
+                                POSTS
+                            </div>
+                            <% for (post of profileUser.posts) {%>
+                                <div class="container-fluid" id="post-<%=post._id%>" style="padding-left:1rem;padding-right:1rem;">
+                                    <div class="card" style="padding:1rem;margin-bottom:2rem;">
+                                        <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
+                                            <div style="font-weight:700;">
+                                                <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%= post.user.name %>
+                                            </div>
+                                            <div style="font-weight:750;">
+                                                <%=post.createdAt.toDateString()%>
+                                            </div>
+                                        </div>
+                                        <div class="card-body" style="min-height:10rem;height:auto;">
+                                            <%= post.content %>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="posts-footer">
+                                                <div>
+                                                    <a class="toggle-like-button" data-likes="<%=post.likes.length%>" href="/likes/toggle/?id=<%=post._id%>&type=Post">Like <span class="badge badge-info"><%=post.likes.length%></span></a>
+                                                    <a data-toggle="collapse" class="toggle-comments-button-<%=post._id%>" data-comments="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
+                                                </div>
+                                                <div id="delete">
+                                                    <% if(locals.user&&(locals.user.id==post.user.id)){%>
+                                                       <a href="/posts/destroy/<%=post.id%>" class="delete-post-button">Delete <i class="fas fa-trash"></i></a> 
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div id="collapse<%=post.id%>" class="panel-collapse collapse container-fluid group-comments" style="padding-left:2rem;background-color: lightgrey;">
+                        
+                                            <form action="/comments/create/" method="post" class="post-<%=post._id%>-comments-form" style="margin-top:1rem;margin-bottom:1rem;">
+                                                <div class="form-group">
+                                                    <input type="text" name="content" class="form-control comment-content-input-<%=post._id%>" placeholder="Add a comment" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="hidden" name="post" value="<%=post._id%>">
+                                                </div>
+                                                <button type="submit" class="btn btn-success">Add Comment</button>
+                                            </form>
+    
+                                            <br>
+    
+                                            <div class="comments-section<%=post._id%>">
+                                                <% for (comment of post.comments) { %>
+                                                    <div class="card  comments-list-container<%=post._id%> comment-group" id="comment-<%=comment._id%>" style="margin-right:0px;margin-bottom:1rem;">
+                                                        <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
+                                                            <div style="font-weight:700;">
+                                                                <img src="<%=comment.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%=comment.user.name%>&nbsp;
+                                                            </div>
+                                                            <div>
+                                                                <%=comment.createdAt.toDateString()%>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body"> 
+                                                            <div class="comments-footer">
+                                                                <div>
+                                                                    <%=comment.content%>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div id="delete">
+                                                                <a class="toggle-like-button" data-likes="<%=comment.likes.length%>" href="/likes/toggle/?id=<%=comment._id%>&type=Comment">Like <span class="badge badge-info"><%=comment.likes.length%></span></a>
+                                                                <% if(locals.user&&(locals.user.id==comment.user.id)){%>
+                                                                    <a href="/comments/destroy/<%=comment.id%>" class="delete-comment-button" data-test="<%=comment.id%>">Delete <i class="fas fa-trash"></i></a> 
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <%  } %>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                             <p class="text">No posts yet :)</p>
+                        <% } %>
+                        </div>
+                    </div>
+               </div>
             </div>
         </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <script src="/js/profile.js"></script>
+    <script src="/js/home_posts.js"></script>
+    <script src="/js/toggle_likes.js"></script>
+    <script>
+        $('.toggle-like-button').each(function(){
+            let self = this;
+            let toggleLike = new ToggleLike(self)
+        });
+    </script>
     <script>
         <% if(flash.success&&flash.success.length>0) { %>
             new Noty({
