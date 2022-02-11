@@ -48,7 +48,7 @@ module.exports.update = async function(req,res) {
                 }
                 user.save();
                 req.flash('success','Profile Updated');
-                return res.redirect(`../../users/profile/${req.user._id}`);
+                return res.redirect(`/users/profile/${req.user._id}`);
             });
         }
         else{
@@ -64,7 +64,7 @@ module.exports.update = async function(req,res) {
 //Render the login page
 module.exports.login = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
+        return res.redirect('/users/feed');
     }
     return res.render('login');
 } 
@@ -72,7 +72,7 @@ module.exports.login = function(req,res){
 //Render the Signup Page
 module.exports.signup = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
+        return res.redirect('/users/feed');
     }
     return res.render('signup');
 }
@@ -194,7 +194,7 @@ module.exports.createSession = function(req,res){
 module.exports.destroySession = function(req,res){
     req.logout();
     req.flash('success','Logged out Successfully');
-    return res.redirect('/users/login');
+    return res.redirect('/');
 }
 
 module.exports.editProfile = function(req,res){

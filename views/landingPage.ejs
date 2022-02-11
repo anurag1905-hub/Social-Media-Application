@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Social Media Application</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/css/post.css">
+    </head>
+    <body>
+        <div class="container-fluid mt-3">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/users/landingPageFeed">POSTS</a>
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link" href="/users/login">LOGIN</a>
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link" href="/users/signup">SIGNUP</a>
+                        </li>  
+                    </ul>
+                </div>  
+            </nav>
+            <div class="container-fluid box" style="padding:0px;margin:0px;">
+                <div class="post-box">
+                    <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;">
+                        <% for (post of profileUser.posts) {%>
+                            <div class="container-fluid" id="post-<%=post._id%>" style="padding:0px;">
+                                <div class="card" style="padding:1rem;margin-bottom:2rem;">
+                                    <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
+                                        <div style="font-weight:700;">
+                                            <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%= post.user.name %>
+                                        </div>
+                                        <div style="font-weight:750;">
+                                            <%=post.createdAt.toDateString()%>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="min-height:10rem;height:auto;">
+                                        <%= post.content %>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="posts-footer">
+                                            <div>
+                                                <a class="toggle-like-button" data-likes="<%=post.likes.length%>" href="/likes/toggle/?id=<%=post._id%>&type=Post">Like <span class="badge badge-info"><%=post.likes.length%></span></a>
+                                                <a data-toggle="collapse" class="toggle-comments-button" data-likes="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="collapse<%=post.id%>" class="panel-collapse collapse container-fluid group-comments" style="padding-left:2rem;background-color: lightgrey;">
+                                        <br>
+                                        <div class="comments-section<%=post._id%>">
+                                            <% for (comment of post.comments) { %>
+                                                <div class="card  comments-list-container<%=post._id%> comment-group" id="comment-<%=comment._id%>" style="margin-right:0px;margin-bottom:1rem;">
+                                                    <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
+                                                        <div style="font-weight:700;">
+                                                            <img src="<%=comment.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <%=comment.user.name%>&nbsp;
+                                                        </div>
+                                                        <div>
+                                                            <%=comment.createdAt.toDateString()%>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body"> 
+                                                        <div class="comments-footer">
+                                                            <div>
+                                                                <%=comment.content%>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <%  } %>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+    </body>
