@@ -60,12 +60,6 @@ body {
       text-decoration: none;
       color: blue; }
 
-.comments-footer {
-  display: flex;
-  flex-direction: column; }
-  .comments-footer div a {
-    font-size: 1rem; }
-
 a i:hover {
   color: red; }
 

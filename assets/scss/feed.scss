@@ -54,17 +54,6 @@ body{
     }
 }
 
-.comments-footer{
-    display:flex;
-    flex-direction:column;
-    div{
-        a {
-            font-size:1rem;
-        }
-        
-    }
-}
-
 a {
     i{
         &:hover{

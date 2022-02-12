@@ -43,6 +43,10 @@ class PostComments{
 
                 $(`.comments-section${postId}`).prepend(newComment);
                 pSelf.deleteComment($(' .delete-comment-button', newComment),postId);
+
+                editComment();
+                saveComment();
+
                 //console.log($(' .delete-comment-button', newComment));
 
                 $(`.comment-content-input-${postId}`).val("");
@@ -75,19 +79,18 @@ class PostComments{
               ${obj.time} at ${comment.time}
           </div>
       </div>
-      <div class="card-body"> 
-            <div class="comments-footer">
-                <div>
-                    ${comment.content}
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
+      <div class="card-body comment-content-${comment._id}">    
+          ${comment.content}       
+      </div>
+      <div class="card-footer">
             <div id="delete">
                 <a class="toggle-like-button" data-likes=${comment.likes.length} href="/likes/toggle/?id=${comment._id}&&type=Comment">Like <span class="badge badge-info">${comment.likes.length}</span></a>
-                <a href="/comments/destroy/${comment._id}" class="delete-comment-button" data-test=${comment.id}>Delete <i class="fas fa-trash"></i></a> 
+                <div>
+                    <a href="/comments/edit/${comment._id}" class="edit-comment target-comment-${comment._id}" data-targetComment="${comment._id}">Edit <i class="fas fa-edit"></i></a> &nbsp;
+                    <a href="/comments/destroy/${comment.id}" class="delete-comment-button" data-test="${comment._id}">Delete <i class="fas fa-trash"></i></a> 
+                </div>
             </div>
-        </div>
+      </div>
   </div>`);
   }
   

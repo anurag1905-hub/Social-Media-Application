@@ -103,3 +103,38 @@ module.exports.destroy = async function(req,res){
     }
 }
 
+module.exports.edit = function(req,res){
+    return res.redirect('back');
+}
+
+module.exports.save = async function(req,res){
+    let commentId = req.query.id;
+    let newContent = decodeURI(req.query.content);
+
+    let comment = await Comment.findById(commentId);
+    if(!comment||comment.user!=req.user.id){
+       if(req.xhr){
+           return res.status(200).json({
+               data:{
+                   
+               },
+               message:"Error"
+           });
+        }
+        return res.redirect('back');
+    }
+    else{
+        comment.content = newContent;
+        comment.save();
+        if(req.xhr){
+           return res.status(200).json({
+               data:{
+                   comment:comment
+               },
+               message:"Comment Saved"
+           });
+        }
+        return res.redirect('back');
+    }
+}
+

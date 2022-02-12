@@ -129,18 +129,18 @@
                                                                 <%=comment.createdAt.toDateString()%> at <%=comment.time%>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body"> 
-                                                            <div class="comments-footer">
-                                                                <div>
-                                                                    <%=comment.content%>
-                                                                </div>
-                                                            </div>
+                                                        <div class="card-body comment-content-<%=comment._id%>">    
+                                                            <!-- Convert string to html -->
+                                                            <%-comment.content%>       
                                                         </div>
                                                         <div class="card-footer">
                                                             <div id="delete">
                                                                 <a class="toggle-like-button" data-likes="<%=comment.likes.length%>" href="/likes/toggle/?id=<%=comment._id%>&type=Comment">Like <span class="badge badge-info"><%=comment.likes.length%></span></a>
                                                                 <% if(locals.user&&(locals.user.id==comment.user.id)){%>
-                                                                    <a href="/comments/destroy/<%=comment.id%>" class="delete-comment-button" data-test="<%=comment.id%>">Delete <i class="fas fa-trash"></i></a> 
+                                                                    <div>
+                                                                        <a href="/comments/edit/<%=comment._id%>" class="edit-comment target-comment-<%=comment._id%>" data-targetComment="<%=comment._id%>">Edit <i class="fas fa-edit"></i></a> &nbsp;
+                                                                        <a href="/comments/destroy/<%=comment.id%>" class="delete-comment-button" data-test="<%=comment.id%>">Delete <i class="fas fa-trash"></i></a> 
+                                                                    </div>
                                                                 <% } %>
                                                             </div>
                                                         </div>
@@ -165,6 +165,7 @@
     <script src="/js/home_posts.js"></script>
     <script src="/js/toggle_likes.js"></script>
     <script src="/js/edit_post.js"></script>
+    <script src="/js/edit_comment.js"></script>
     <script>
         $('.toggle-like-button').each(function(){
             let self = this;
