@@ -141,6 +141,8 @@ class PostComments{
                     let newPost = newPostDom(data.data.post,data.data.obj);
                     $('#posts-list-container').prepend(newPost);
                     deletePost($(' .delete-post-button',newPost)); 
+                    editPost();
+                    savePost();
 
                     // call the create comment class
                     new PostComments(data.data.post._id);
@@ -179,7 +181,7 @@ class PostComments{
                     ${obj.time} at ${post.time}
                 </div>
             </div>
-            <div class="card-body" style="min-height:10rem;height:auto;">
+            <div class="card-body post-content-${post._id}" style="min-height:10rem;height:auto;">
                 ${ post.content }
             </div>
             <div class="card-footer">
@@ -190,6 +192,7 @@ class PostComments{
                     </div>
 
                     <div id="delete">
+                        <a href="/posts/edit/${post._id}" class="edit-post target-post-${post._id}" data-targetPost="${post._id}">Edit <i class="fas fa-edit"></i></a> &nbsp;
                         <a href="/posts/destroy/${post._id}" class="delete-post-button">Delete <i class="fas fa-trash"></i></a> 
                     </div>
                 </div>

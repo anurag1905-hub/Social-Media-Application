@@ -35,6 +35,7 @@ module.exports.create = async function(req,res){
                 post:post._id,
                 time:time
             });
+            console.log(comment);
             let profileUser = await User.findById(req.user._id);
             let job = queue.create('emails',post).save(function(err){
                if(err){

@@ -60,8 +60,9 @@
                                     <%=post.createdAt.toDateString()%> at <%=post.time%>
                                 </div>
                             </div>
-                            <div class="card-body" style="min-height:10rem;height:auto;">
-                                <%= post.content %>
+                            <!-- convert string to html -->
+                            <div class="card-body post-content-<%=post._id%>" style="min-height:10rem;height:auto;">
+                                <%-post.content-%> 
                             </div>
                             <div class="card-footer">
                                 <div class="posts-footer">
@@ -71,6 +72,7 @@
                                     </div>
                                     <div id="delete">
                                         <% if(locals.user&&(locals.user.id==post.user.id)){%>
+                                           <a href="/posts/edit/<%=post._id%>" class="edit-post target-post-<%=post._id%>" data-targetPost="<%=post._id%>">Edit <i class="fas fa-edit"></i></a> &nbsp;
                                            <a href="/posts/destroy/<%=post.id%>" class="delete-post-button">Delete <i class="fas fa-trash"></i></a> 
                                         <% } %>
                                     </div>
@@ -129,32 +131,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <script src="/js/home_posts.js"></script>
-        <script src="/js/toggle_likes.js"></script>
-        <script>
-            $('.toggle-like-button').each(function(){
-                let self = this;
-                let toggleLike = new ToggleLike(self)
-            });
-        </script>
-        <script>
-            <% if(flash.success&&flash.success.length>0) { %>
-                new Noty({
-                theme:'relax',
-                text:"<%=flash.success%>",
-                type:'success',
-                layout:'topRight',
-                timeout:1500
-                }).show();
-            <% } %>
-            <% if(flash.error&&flash.error.length>0) { %>
-                new Noty({
-                theme:'relax',
-                text:"<%=flash.error%>",
-                type:'error',
-                layout:'topRight',
-                timeout:1500
-                }).show();
-            <% } %>
-        </script>
+    <script src="/js/edit_post.js"></script>
+    <script src="/js/toggle_likes.js"></script>
+    <script>
+        $('.toggle-like-button').each(function(){
+            let self = this;
+            let toggleLike = new ToggleLike(self)
+        });
+    </script>
+    <script>
+        <% if(flash.success&&flash.success.length>0) { %>
+            new Noty({
+            theme:'relax',
+            text:"<%=flash.success%>",
+            type:'success',
+            layout:'topRight',
+            timeout:1500
+            }).show();
+        <% } %>
+        <% if(flash.error&&flash.error.length>0) { %>
+            new Noty({
+            theme:'relax',
+            text:"<%=flash.error%>",
+            type:'error',
+            layout:'topRight',
+            timeout:1500
+            }).show();
+        <% } %>
+    </script>
     </body>
 </html>

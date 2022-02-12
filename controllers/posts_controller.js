@@ -96,3 +96,39 @@ module.exports.destroy = async function(req,res){
         return;
     } 
  }
+
+ module.exports.edit = function(req,res){
+     return res.redirect('back');
+ }
+
+ module.exports.save = async function(req,res){
+     let postId = req.query.id;
+     let newContent = decodeURI(req.query.content);
+     console.log(postId);
+     console.log(newContent);
+     let post = await Post.findById(postId);
+     if(!post||post.user!=req.user.id){
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    
+                },
+                message:"Error"
+            });
+         }
+         return res.redirect('back');
+     }
+     else{
+         post.content = newContent;
+         post.save();
+         if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    post:post
+                },
+                message:"Post Saved"
+            });
+         }
+         return res.redirect('back');
+     }
+ }
