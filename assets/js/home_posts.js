@@ -68,8 +68,8 @@ class PostComments{
    newCommentDom(obj,comment){
       return $(`<div class="card  comments-list-container comment-group" id="comment-${comment._id}" style="margin-right:0px;margin-bottom:1rem;">
       <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
-          <div style="font-weight:700;">
-              <img src="${obj.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; ${obj.name}&nbsp;
+          <div class="profile-link-comment" style="font-weight:700;">
+                <img src="${obj.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${comment.user}">${obj.name}</a>&nbsp;
           </div>
           <div>
               ${obj.time}
@@ -172,8 +172,8 @@ class PostComments{
         return $(`<div class="container-fluid" id="post-${post._id}" style="padding:0px;">
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
-                <div style="font-weight:700;">
-                <img src="${obj.profileUser.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; ${ obj.name }
+                <div class="profile-link-post" style="font-weight:700;">
+                    <img src="${obj.profileUser.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${obj.profileUser._id}">${ obj.name }</a>&nbsp;
                 </div>
                 <div style="font-weight:750;">
                     ${obj.time}

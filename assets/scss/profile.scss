@@ -126,6 +126,23 @@ a {
     }
 }
 
+.profile-link-post{
+    a{
+        text-decoration: none;
+    }
+}
+
+.profile-link-comment{
+    a{
+        text-decoration: none;
+        color:white;
+
+        &:hover{
+            color:lightgray;
+        }
+    }
+}
+
 @media screen and (max-width:1000px) {
     .wrapper{
         margin-top:5rem;

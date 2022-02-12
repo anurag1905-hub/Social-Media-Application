@@ -55,3 +55,12 @@ a i:hover {
   #delete a:hover {
     color: red;
     text-decoration: none; }
+
+.profile-link-post a {
+  text-decoration: none; }
+
+.profile-link-comment a {
+  text-decoration: none;
+  color: white; }
+  .profile-link-comment a:hover {
+    color: lightgray; }

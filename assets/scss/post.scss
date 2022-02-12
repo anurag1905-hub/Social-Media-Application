@@ -50,6 +50,23 @@ body{
     justify-content:space-between;
 }
 
+.profile-link-post{
+    a{
+        text-decoration: none;
+    }
+}
+
+.profile-link-comment{
+    a{
+        text-decoration: none;
+        color:white;
+
+        &:hover{
+            color:lightgray;
+        }
+    }
+}
+
 .posts-footer{
     display:flex;
     flex-direction:row;

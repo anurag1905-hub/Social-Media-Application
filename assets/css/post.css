@@ -41,6 +41,15 @@ body {
   flex-direction: row;
   justify-content: space-between; }
 
+.profile-link-post a {
+  text-decoration: none; }
+
+.profile-link-comment a {
+  text-decoration: none;
+  color: white; }
+  .profile-link-comment a:hover {
+    color: lightgray; }
+
 .posts-footer {
   display: flex;
   flex-direction: row;

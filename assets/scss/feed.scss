@@ -85,3 +85,20 @@ a {
         }
     }
 }
+
+.profile-link-post{
+    a{
+        text-decoration: none;
+    }
+}
+
+.profile-link-comment{
+    a{
+        text-decoration: none;
+        color:white;
+
+        &:hover{
+            color:lightgray;
+        }
+    }
+}
