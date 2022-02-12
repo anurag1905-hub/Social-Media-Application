@@ -20,7 +20,11 @@ const postSchema = new mongoose.Schema({
           type:mongoose.Schema.Types.ObjectId,
           ref:'Like'
        }
-   ]
+   ],
+   time:{
+       type:'String',
+       required:true
+   }
 },{
    timestamps:true
 });

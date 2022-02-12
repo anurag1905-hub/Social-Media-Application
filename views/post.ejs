@@ -67,7 +67,7 @@
                                             <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=post.user._id%>"><%= post.user.name %></a>
                                         </div>
                                         <div style="font-weight:750;">
-                                            <%=post.createdAt.toDateString()%>
+                                            <%=post.createdAt.toDateString()%> at <%=post.time%>
                                         </div>
                                     </div>
                                     <div class="card-body" style="min-height:10rem;height:auto;">
@@ -109,7 +109,7 @@
                                                             <img src="<%=comment.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=comment.user._id%>"><%=comment.user.name%></a>&nbsp;
                                                         </div>
                                                         <div>
-                                                            <%=comment.createdAt.toDateString()%>
+                                                            <%=comment.createdAt.toDateString()%> at <%=comment.time%>
                                                         </div>
                                                     </div>
                                                     <div class="card-body"> 

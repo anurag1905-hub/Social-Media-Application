@@ -8,13 +8,32 @@ const queue = require('../config/kue');
 
 module.exports.create = async function(req,res){
     try{
+
+        let date = new Date();
+        let hours = date.getHours().toString();
+        if(hours.length==1){
+            hours="0"+hours;
+        }
+
+        let minutes = date.getMinutes().toString();
+        if(minutes.length==1){
+            minutes="0"+minutes;
+        }
+
+        let seconds = date.getSeconds().toString();
+        if(seconds.length==1){
+            seconds="0"+seconds;
+        }
+        let time = hours+":"+minutes+":"+seconds;
+        
         let post = await Post.findById(req.body.post).populate('user');
 
         if(post){
             let comment = await Comment.create({
                 content:req.body.content,
                 user:req.user._id,
-                post:post._id
+                post:post._id,
+                time:time
             });
             let profileUser = await User.findById(req.user._id);
             let job = queue.create('emails',post).save(function(err){

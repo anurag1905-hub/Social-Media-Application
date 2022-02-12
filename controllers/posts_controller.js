@@ -5,10 +5,30 @@ const Like = require('../models/like');
 
 module.exports.create = async function(req,res){
     try{
+
+        let date = new Date();
+        let hours = date.getHours().toString();
+        if(hours.length==1){
+            hours="0"+hours;
+        }
+
+        let minutes = date.getMinutes().toString();
+        if(minutes.length==1){
+            minutes="0"+minutes;
+        }
+
+        let seconds = date.getSeconds().toString();
+        if(seconds.length==1){
+            seconds="0"+seconds;
+        }
+        let time = hours+":"+minutes+":"+seconds;
+
         let post = await Post.create({
             content:req.body.content,
-            user:req.user._id
+            user:req.user._id,
+            time:time
         });
+        
         let profileUser = await User.findById(req.user._id);
         let obj = {
             name:req.user.name,

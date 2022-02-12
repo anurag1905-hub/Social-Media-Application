@@ -72,7 +72,7 @@ class PostComments{
                 <img src="${obj.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${comment.user}">${obj.name}</a>&nbsp;
           </div>
           <div>
-              ${obj.time}
+              ${obj.time} at ${comment.time}
           </div>
       </div>
       <div class="card-body"> 
@@ -176,7 +176,7 @@ class PostComments{
                     <img src="${obj.profileUser.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${obj.profileUser._id}">${ obj.name }</a>&nbsp;
                 </div>
                 <div style="font-weight:750;">
-                    ${obj.time}
+                    ${obj.time} at ${post.time}
                 </div>
             </div>
             <div class="card-body" style="min-height:10rem;height:auto;">
