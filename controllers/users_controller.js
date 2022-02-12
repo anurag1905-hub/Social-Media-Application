@@ -159,8 +159,21 @@ module.exports.feed = async function (req,res){
             }
         ]
     });
+
+    let all_posts=[];
+    for(friend of user.friendships){
+        for(each_post of friend.posts){
+           all_posts.push(each_post);
+        }
+    }
+
+    all_posts.sort(function(a,b){
+        //subtract the dates to get a value that is either negative, positive, or zero.
+        return (b.createdAt) - (a.createdAt);
+    });
+
     return res.render('feed',{
-        friends:user.friendships
+        posts:all_posts
     });
 }
 

@@ -48,14 +48,13 @@
                     </ul>
                 </div>  
             </nav>
-            <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;margin-top:5rem;">
-            <% for (profileUser of friends) { %>   
-                <% for (post of profileUser.posts) {%>
+            <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;margin-top:5rem;"> 
+                <% for (post of posts) {%>
                     <div class="container-fluid" id="post-<%=post._id%>" style="padding:1rem;">
                         <div class="card" style="padding:1rem;margin-bottom:2rem;">
                             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                                 <div class="profile-link-post" style="font-weight:700;">
-                                    <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=post.user._id%>"><%= post.user.name %></a>
+                                    <img src="<%=post.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=post.user._id%>"><%= post.user.name %></a>
                                 </div>
                                 <div style="font-weight:750;">
                                     <%=post.createdAt.toDateString()%>
@@ -68,7 +67,7 @@
                                 <div class="posts-footer">
                                     <div>
                                         <a class="toggle-like-button" data-likes="<%=post.likes.length%>" href="/likes/toggle/?id=<%=post._id%>&type=Post">Like <span class="badge badge-info"><%=post.likes.length%></span></a>
-                                        <a data-toggle="collapse" class="toggle-comments-button" data-likes="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
+                                        <a data-toggle="collapse" class="toggle-comments-button-<%=post._id%>" data-comments="<%=post.comments.length%>"  href="#collapse<%=post.id%>">Comments <span class="badge badge-info"><%=post.comments.length%></span></a><br> 
                                     </div>
                                     <div id="delete">
                                         <% if(locals.user&&(locals.user.id==post.user.id)){%>
@@ -82,7 +81,7 @@
             
                                 <form action="/comments/create/" method="post" class="post-<%=post._id%>-comments-form" style="margin-top:1rem;margin-bottom:1rem;">
                                     <div class="form-group">
-                                        <input type="text" name="content" class="form-control" placeholder="Add a comment" required>
+                                        <input type="text" name="content" class="form-control comment-content-input-<%=post._id%>" placeholder="Add a comment" required>
                                     </div>
                                     <div class="form-group">
                                         <input type="hidden" name="post" value="<%=post._id%>">
@@ -125,7 +124,6 @@
                         </div>
                     </div>
                 <% } %>
-            <% } %>
             </div>
         </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
