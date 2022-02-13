@@ -9,11 +9,28 @@ module.exports.showFriends = async function(req,res){
     });
 }
 
-module.exports.users = function(req,res){
-    User.find({},function(err,user){
-        return res.render('user',{
-            profiles:user
-        });
+module.exports.users = async function(req,res){
+    let user = await User.findById(req.user._id); 
+
+    let all_users = await User.find({});
+
+    let profiles=[];
+    for(u of all_users){
+
+        let requestReceived = user.haveSent.get(u.id);
+        let requestSent = user.haveReceived.get(u.id);
+        let friends = user.areFriends.get(u.id);
+        let same = user.id ==u.id;           // users should not get their profile in suggestions.
+
+        if(!requestReceived&&!requestSent&&!friends&&!same){
+            profiles.push(u);
+        }
+    }
+
+    console.log(profiles);
+
+    return res.render('user',{
+        profiles:profiles
     });
 }
 
