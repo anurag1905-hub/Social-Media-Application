@@ -130,7 +130,7 @@
             event.preventDefault();
             console.log('Withdrawal Prevented');
             console.log($(this).prop('href'));
-            let targetUser = $(this).attr("data-targetUser");;
+            let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
@@ -152,6 +152,7 @@
             event.preventDefault();
             console.log('Accepting Prevented');
             console.log($(this).prop('href'));
+            let targetUser = $(this).attr("data-targetUser");;
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
@@ -174,7 +175,11 @@
                         console.log('Error')
                 }
             });
-            
+            $('.accept-friend-request').replaceWith(`
+               <a href="/users/friends/viewFriends/${targetUser}" class="btn btn-success view-friends" data-targetUser="${targetUser}">View Friends</a>
+               <a href="/users/friends/removeFriend/${targetUser}" class="btn btn-danger remove-friend" data-targetUser="${targetUser}">Remove Friend</a>
+            `);
+            removeFriend();
        })
     }
 
@@ -183,18 +188,20 @@
             event.preventDefault();
             console.log('Rejection Prevented');
             console.log($(this).prop('href'));
+            let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
                 success:function(data){
-                    $('.reject-friend-request').text("Request Rejected")
-                    $('.reject-friend-request').attr("href","#");
                     $('.accept-friend-request').remove();
-                    let all_posts = getAllPosts(data.profileUser);
                 },error:function(err){
                         console.log('Error')
                 }
             });
+            $('.reject-friend-request').replaceWith(`
+               <a href="/users/friends/sendRequest/${targetUser}" class="btn btn-success send-friend-request" data-targetUser="${targetUser}">Send Friend Request</a>
+            `);
+            sendFriendRequest();
         });
     }
 
@@ -202,13 +209,11 @@
         $('.remove-friend').click(function(event){
            event.preventDefault();
            console.log('Friend Removal Prevented');
-           let count = 0;
+           let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
                 success:function(data){
-                    $('.remove-friend').text("Friend Removed")
-                    $('.remove-friend').attr("href","#");
                     $('.toggle-post').remove();
                     $('.view-friends').remove();
                     
@@ -217,10 +222,12 @@
 
                 },error:function(err){
                     console.log('Error');
-                    ++count;
-                    console.log('Count= ',count);
                 }
             });
+            $('.remove-friend').replaceWith(`
+               <a href="/users/friends/sendRequest/${targetUser}" class="btn btn-success send-friend-request" data-targetUser="${targetUser}">Send Friend Request</a>
+            `);
+            sendFriendRequest();
         });
     }
     

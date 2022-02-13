@@ -58,11 +58,11 @@
                             <%} else if(requestSent) {%>
                                <a href="/users/friends/withdrawRequest/<%=profile_user.id%>" class="btn btn-danger withdraw-friend-request" data-targetUser="<%=profile_user.id%>">Withdraw Friend Request</a>
                             <% } else if(requestReceived) { %>
-                               <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
-                               <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
+                               <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request" data-targetUser="<%=profile_user.id%>">Accept Friend Request</a>
+                               <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request" data-targetUser="<%=profile_user.id%>">Reject Friend Request</a>
                             <% } else if(friends){ %>
-                               <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success view-friends">View Friends</a>
-                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend">Remove Friend</a>                       
+                               <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success view-friends" data-targetUser="<%=profile_user.id%>">View Friends</a>
+                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend" data-targetUser="<%=profile_user.id%>">Remove Friend</a>                       
                             <% } else { %>
                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request" data-targetUser="<%=profile_user.id%>">Send Friend Request</a>
                             <% } %>
