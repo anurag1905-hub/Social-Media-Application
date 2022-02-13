@@ -11,6 +11,7 @@ module.exports.profile = async function(req,res){
     let requestReceived = user.haveSent.get(req.user.id);
     let requestSent = user.haveReceived.get(req.user.id);
     let friends = user.areFriends.get(req.user.id);
+    let self = req.user.id==req.params.id;
 
     let profileUser = await User.findById(req.params.id)
     .populate({
@@ -44,7 +45,8 @@ module.exports.profile = async function(req,res){
         requestSent:requestSent,
         requestReceived:requestReceived,
         friends:friends,
-        profileUser:profileUser
+        profileUser:profileUser,
+        self:self
     });
 
 }

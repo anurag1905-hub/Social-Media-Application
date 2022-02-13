@@ -61,8 +61,8 @@
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
                             <% } else if(friends){ %>
-                               <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success">View Friends</a>
-                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger">Remove Friend</a>                       
+                               <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success view-friends">View Friends</a>
+                               <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend">Remove Friend</a>                       
                             <% } else { %>
                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request">Send Friend Request</a>
                             <% } %>
@@ -70,13 +70,14 @@
                     </div>
                     <div class="posts-container">
                         <div id="posts-list-container" class="container-fluid post-group" style="padding:0px;">
-                    <% if(friends) { %>
+                    <% if(friends || self) { %>
                         <% if(profileUser.posts.length) { %>
                             <div class="text">
                                 POSTS
+                                <p class="message" style="display:none;">Not friends yet :(</p>
                             </div>
                             <% for (post of profileUser.posts) {%>
-                                <div class="container-fluid" id="post-<%=post._id%>" style="padding-left:1rem;padding-right:1rem;">
+                                <div class="container-fluid toggle-post" id="post-<%=post._id%>" style="padding-left:1rem;padding-right:1rem;">
                                     <div class="card" style="padding:1rem;margin-bottom:2rem;">
                                         <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
                                             <div class="profile-link-post" style="font-weight:700;">
@@ -158,7 +159,7 @@
                     <% } else { %>
                         <div class="text">
                             POSTS
-                            <p>Not friends yet :(</p>
+                            <p class="message">Not friends yet :(</p>
                         </div>
                     <% } %>
                         </div>

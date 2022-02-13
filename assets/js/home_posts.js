@@ -1,29 +1,25 @@
 class PostComments{
-    // constructor is used to initialize the instance of the class whenever a new instance is created
+    
     
     constructor(postId){
           this.postId = postId;
           this.postContainer = (`.comments-section${postId}`);
           this.newCommentForm = $(`.post-${postId}-comments-form`);
           this.helper = (`.post-${postId}-comments-form`);
-          //console.log(this.newCommentForm);
+          console.log('is that you',postId);
           this.createComment(postId);
           let self = this;
-          // call for all the existing comments
-          // $('.delete .delete-comment-button').hide();
-          //   $(' .delete-comment-button', this.postContainer).each(function(){
-          //     //console.log('hey');
-        //       self.deleteComment($(this));
-        //   });
-        // console.log($(this.postContainer).find('.delete-comment-button').length);
+          
             $(this.postContainer).find('.delete-comment-button').each(function(){
-               // console.log('FFFF');
+                
                 self.deleteComment($(this),postId);
             });
      }
   
      createComment(postId){
       let pSelf = this;
+      console.log('reached the create Comment Section',postId);
+      console.log(this.newCommentForm.html());
       this.newCommentForm.submit(function(e){
           e.preventDefault();
           let self = this;
@@ -87,7 +83,7 @@ class PostComments{
                 <a class="toggle-like-button" data-likes=${comment.likes.length} href="/likes/toggle/?id=${comment._id}&&type=Comment">Like <span class="badge badge-info">${comment.likes.length}</span></a>
                 <div>
                     <a href="/comments/edit/${comment._id}" class="edit-comment target-comment-${comment._id}" data-targetComment="${comment._id}">Edit <i class="fas fa-edit"></i></a> &nbsp;
-                    <a href="/comments/destroy/${comment.id}" class="delete-comment-button" data-test="${comment._id}">Delete <i class="fas fa-trash"></i></a> 
+                    <a href="/comments/destroy/${comment._id}" class="delete-comment-button" data-test="${comment._id}">Delete <i class="fas fa-trash"></i></a> 
                 </div>
             </div>
       </div>
@@ -147,7 +143,7 @@ class PostComments{
                     editPost();
                     savePost();
 
-                    // call the create comment class
+                    
                     new PostComments(data.data.post._id);
                     //console.log(data.data.post._id);
 
@@ -191,7 +187,7 @@ class PostComments{
                 <div class="posts-footer">
                     <div>
                         <a class="toggle-like-button" data-likes=${post.likes.length} href="/likes/toggle/?id=${post._id}&&type=Post">Like <span class="badge badge-info">${post.likes.length}</span></a>
-                        <a data-toggle="collapse" class="toggle-comments-button-${post._id}" data-comments="${post.comments.length}"  href="#collapse${post.id}">Comments <span class="badge badge-info">${post.comments.length}</span></a><br>
+                        <a data-toggle="collapse" class="toggle-comments-button-${post._id}" data-comments="${post.comments.length}"  href="#collapse${post._id}">Comments <span class="badge badge-info">${post.comments.length}</span></a><br>
                     </div>
 
                     <div id="delete">
@@ -201,7 +197,7 @@ class PostComments{
                 </div>
             </div>
 
-            <div id="collapse${post.id}" class="panel-collapse collapse container-fluid group-comments" style="padding-left:2rem;background-color: lightgrey;">
+            <div id="collapse${post._id}" class="panel-collapse collapse container-fluid group-comments" style="padding-left:2rem;background-color: lightgrey;">
 
                 <form action="/comments/create/" method="post" class="post-${post._id}-comments-form" style="margin-top:1rem;margin-bottom:1rem;">
                     <div class="form-group">
@@ -256,7 +252,6 @@ class PostComments{
 
             // get the post's id by splitting the id attribute
             let postId = self.prop('id').split("-")[1];
-            //console.log(postId);
              new PostComments(postId);
              
         });
