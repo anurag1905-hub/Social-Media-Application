@@ -6,7 +6,6 @@ class PostComments{
           this.postContainer = (`.comments-section${postId}`);
           this.newCommentForm = $(`.post-${postId}-comments-form`);
           this.helper = (`.post-${postId}-comments-form`);
-          console.log('is that you',postId);
           this.createComment(postId);
           let self = this;
           
@@ -18,8 +17,6 @@ class PostComments{
   
      createComment(postId){
       let pSelf = this;
-      console.log('reached the create Comment Section',postId);
-      console.log(this.newCommentForm.html());
       this.newCommentForm.submit(function(e){
           e.preventDefault();
           let self = this;

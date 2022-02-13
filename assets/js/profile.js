@@ -104,18 +104,24 @@
         $('.send-friend-request').click(function(event){
             event.preventDefault();
             console.log('Clicked',this);
-           console.log($(this).prop('href'));
-           $.ajax({
+            console.log($(this).prop('href'));
+            let targetUser = $(this).attr("data-targetUser");
+            $.ajax({
                type:'get',
                url:$(this).prop('href'),
                success:function(data){
-                    $('.send-friend-request').text("Request Sent")
-                    $('.send-friend-request').attr("href","#");
+                    
                 },error:function(err){
-                    console.log('Error')
+                    console.log('Error');
                 }
-           });
+            });
+            //Since AJAX is asynchronous
 
+            $('.send-friend-request').replaceWith(`
+                <a href="/users/friends/withdrawRequest/${targetUser}" class="btn btn-danger withdraw-friend-request" data-targetUser="${targetUser}">Withdraw Friend Request</a>
+            `);
+
+             withdrawFriendRequest();
         });
     }
 
@@ -124,16 +130,20 @@
             event.preventDefault();
             console.log('Withdrawal Prevented');
             console.log($(this).prop('href'));
+            let targetUser = $(this).attr("data-targetUser");;
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
-                success:function(data){
-                    $('.withdraw-friend-request').text("Request Withdrawn")
-                    $('.withdraw-friend-request').attr("href","#");
+                success:function(data){ 
+                    
                 },error:function(err){
-                        console.log('Error')
+                    console.log('Error');
                 }
             });
+            $('.withdraw-friend-request').replaceWith(`
+                <a href="/users/friends/sendRequest/${targetUser}" class="btn btn-success send-friend-request" data-targetUser="${targetUser}">Send Friend Request</a>
+            `);
+            sendFriendRequest();
         });
     }
 
@@ -164,6 +174,7 @@
                         console.log('Error')
                 }
             });
+            
        })
     }
 

@@ -52,11 +52,11 @@
                 <div class="wrapper">
                     <div class="card profile-container">
                         <img class="card-img-top" src="<%=profile_user.avatar%>" alt="Profile Picture">
-                        <div class="card-body">
+                        <div class="card-body profile-buttons">
                             <%if(locals.user.id==profile_user.id){%>
                                <a href="/users/edit_profile/<%=locals.user.id%>" class="btn btn-success">Edit Profile</a>
                             <%} else if(requestSent) {%>
-                               <a href="/users/friends/withdrawRequest/<%=profile_user.id%>" class="btn btn-danger withdraw-friend-request">Withdraw Friend Request</a>
+                               <a href="/users/friends/withdrawRequest/<%=profile_user.id%>" class="btn btn-danger withdraw-friend-request" data-targetUser="<%=profile_user.id%>">Withdraw Friend Request</a>
                             <% } else if(requestReceived) { %>
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request">Reject Friend Request</a>
@@ -64,7 +64,7 @@
                                <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success view-friends">View Friends</a>
                                <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend">Remove Friend</a>                       
                             <% } else { %>
-                               <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request">Send Friend Request</a>
+                               <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request" data-targetUser="<%=profile_user.id%>">Send Friend Request</a>
                             <% } %>
                         </div>
                     </div>
