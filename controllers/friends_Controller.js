@@ -3,10 +3,27 @@ const Friendship = require('../models/friendship');
 const Message = require('../models/message');
 
 module.exports.showFriends = async function(req,res){
-    let user = await User.findById(req.user._id).populate('friendships');
-    return res.render('friend',{
-        profiles:user.friendships
-    });
+    let user = await User.findById(req.params.id).populate('friendships');
+    if(!user||((req.params.id!=req.user.id)&&!user.areFriends.get(req.user.id))){
+        return res.render('friend',{
+            profiles:[],
+            self:true
+        });
+    }
+    else{
+        if(req.params.id==req.user.id){
+            return res.render('friend',{
+                profiles:user.friendships,
+                self:true
+            });
+        }
+        else{
+            return res.render('friend',{
+                profiles:user.friendships,
+                self:false
+            });
+        }
+    }
 }
 
 module.exports.users = async function(req,res){
