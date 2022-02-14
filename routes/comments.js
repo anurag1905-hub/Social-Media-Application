@@ -9,4 +9,11 @@ router.get('/destroy/:id',passport.checkAuthentication,comments_Controller.destr
 router.get('/edit',passport.checkAuthentication,comments_Controller.edit);
 router.get('/save',passport.checkAuthentication,comments_Controller.save);
 
+
+router.get('*',function(req,res){
+    return res.render('notification-template',{
+       message:"Not Found!"
+    });
+ });
+
 module.exports = router;

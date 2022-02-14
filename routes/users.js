@@ -32,5 +32,12 @@ router.post('/changePassword/:token',usersController.changePassword);
 router.get('/chatbox',passport.checkAuthentication,usersController.chatbox);
 router.get('/verify-email/:token',usersController.verifyUserEmail);
 
+
+router.get('*',function(req,res){
+   return res.render('notification-template',{
+      message:"Not Found!"
+   });
+});
+
 module.exports = router;
 

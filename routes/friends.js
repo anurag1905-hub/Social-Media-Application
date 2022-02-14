@@ -15,4 +15,11 @@ router.get('/acceptRequest/:id',passport.checkAuthentication,friendsController.a
 router.get('/removeFriend/:id',passport.checkAuthentication,friendsController.removeFriend);
 router.get('/sendMessage/:id',passport.checkAuthentication,friendsController.sendMessage);
 
+
+router.get('*',function(req,res){
+    return res.render('notification-template',{
+       message:"Not Found!"
+    });
+ });
+
 module.exports = router;
