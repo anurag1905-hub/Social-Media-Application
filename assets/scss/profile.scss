@@ -145,7 +145,7 @@ a {
             border:0px;
             margin-left:auto;
             margin-right:auto;
-            margin-bottom: 3rem;
+            margin-bottom: 5rem;
 
             .card-body{
                 font-size:1rem;
@@ -180,4 +180,24 @@ a {
             }
         }
     }
+}
+
+.success-button{
+    a{
+        text-decoration: none;
+        color:white;
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        &:hover{
+            color:green;
+            background-color: white;
+            border:1px solid green;
+        }
+    }
+}
+
+.message{
+    color:red;
 }

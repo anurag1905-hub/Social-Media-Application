@@ -122,7 +122,6 @@
                     console.log('Error');
                 }
             });
-            //Since AJAX is asynchronous
 
             $('.send-friend-request').replaceWith(`
                 <a href="/users/friends/withdrawRequest/${targetUser}" class="btn btn-danger withdraw-friend-request" data-targetUser="${targetUser}">Withdraw Friend Request</a>
@@ -159,17 +158,21 @@
             event.preventDefault();
             console.log('Accepting Prevented');
             console.log($(this).prop('href'));
-            let targetUser = $(this).attr("data-targetUser");;
+            let targetUser = $(this).attr("data-targetUser");
+            let newFriends;
+            console.log($('.message'));
             $.ajax({
+                async:false,
                 type:'get',
                 url:$(this).prop('href'),
                 success:function(data){
-                    $('.accept-friend-request').text("Request Accepted")
-                    $('.accept-friend-request').attr("href","#");
                     $('.reject-friend-request').remove();
+                    $('.media').remove();
                     $('.message').remove();
+                    $('.text').html("POSTS");
 
-                    
+                    newFriends = data.data.newfriends;
+
                     for(post of data.data.profileUser.posts){
                         let newpost = getCompletePost(post,data.data.profileUser,data.data.owner);
 
@@ -178,16 +181,32 @@
                         new PostComments(post._id);
                     }
 
+                    if(data.data.profileUser.posts.length==0){
+                        $('.text').append(`
+                           <p class="message"> No posts yet :) </p>
+                        `);
+                    }
+
                 },error:function(err){
                     console.log('Error');
                 }
             });
-            $('.accept-friend-request').replaceWith(`
-               <a href="/users/friends/viewFriends/${targetUser}" class="btn btn-success view-friends" data-targetUser="${targetUser}">View Friends</a>
-               <a href="/users/friends/removeFriend/${targetUser}" class="btn btn-danger remove-friend" data-targetUser="${targetUser}">Remove Friend</a>
-            `);
+            console.log(newFriends);
+            if(newFriends){
+                console.log('entered');
+                $('.accept-friend-request').replaceWith(`
+                <a href="/users/friends/getFriends/${targetUser}" class="btn btn-success view-friends" data-targetUser="${targetUser}">View Friends</a>
+                <a href="/users/friends/removeFriend/${targetUser}" class="btn btn-danger remove-friend" data-targetUser="${targetUser}">Remove Friend</a>
+                `);
+            }
+            else{
+                $('.accept-friend-request').replaceWith(`
+                    <a href="/users/friends/getFriends/${targetUser}" class="btn btn-success view-friends" data-targetUser="${targetUser}">View Friends</a>
+                `);
+            }
             removeFriend();
-       })
+            viewFriends();
+       });
     }
 
     function rejectFriendRequest(){
@@ -223,8 +242,9 @@
                 success:function(data){
                     $('.toggle-post').remove();
                     $('.view-friends').remove();
-                    
-                    $('.message').css('display','block');
+                    $('.media').remove();
+                    $('.view-friends').remove();
+                    $('.accept-friend-request').remove();
 
 
                 },error:function(err){
@@ -234,7 +254,65 @@
             $('.remove-friend').replaceWith(`
                <a href="/users/friends/sendRequest/${targetUser}" class="btn btn-success send-friend-request" data-targetUser="${targetUser}">Send Friend Request</a>
             `);
+            if($('.message').length==0){
+                $('.text').append(`
+                    <p class="message">Private Account :(</p>
+                `);
+            }
+            else{
+                $('.message').html("Private Account :(");
+            }
             sendFriendRequest();
+        });
+    }
+
+    function getFriendDom(profile){
+        return $(`<div class="media border p-3 mb-3">
+        <img src="${profile.avatar}" alt="profile pic" class="mr-3 rounded-circle" style="width:60px;height:60px;">
+        <div class="media-body">
+            <div class="d-flex">
+                <div class="p-2" style="font-weight:800;font-size:1rem;">
+                    <a href="/users/profile/${profile._id}" class="p-2">${profile.name}</a>
+                </div>
+                <div class="ml-auto bg-success success-button">
+                    <a href="/users/profile/${profile._id}" class="p-2">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    `);
+    }
+
+    function viewFriends(){
+        $('.view-friends').click(function(event){
+            event.preventDefault();
+            $('.text').html("FRIENDS");
+            $('.toggle-post').remove();
+
+            let targetUser = $(this).attr("data-targetUser");
+
+            console.log($(this).prop('href'));
+
+            $.ajax({
+               type:'get',
+               url:$(this).prop('href'),
+               success:function(data){
+                   for(friend of data.data.friends){
+                       let newFriendDom = getFriendDom(friend);
+                       $('.post-group').append(newFriendDom);
+                   }
+               },
+               error:function(error){
+                   console.log(error.responseText);
+               }
+
+            });
+
+            $('.view-friends').replaceWith(`
+                <a href="/users/friends/acceptRequest/${targetUser}" class="btn btn-success accept-friend-request" data-targetUser="${targetUser}">View Posts</a>
+            `);
+            acceptFriendRequest();
+            removeFriend();
         });
     }
     
@@ -243,4 +321,6 @@
     acceptFriendRequest();
     withdrawFriendRequest();
     sendFriendRequest();
+    viewFriends();
+
 }

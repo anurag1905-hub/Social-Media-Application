@@ -29,7 +29,7 @@
                                 <a class="nav-link" href="/users/posts">POSTS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/users/friends/showFriends/<%=locals.user._id%>">FRIENDS</a>
+                                <a class="nav-link" href="/users/friends/showFriends">FRIENDS</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/users/messages">MESSAGES</a>
@@ -61,7 +61,7 @@
                                <a href="/users/friends/acceptRequest/<%=profile_user.id%>" class="btn btn-success accept-friend-request" data-targetUser="<%=profile_user.id%>">Accept Friend Request</a>
                                <a href="/users/friends/rejectRequest/<%=profile_user.id%>" class="btn btn-danger reject-friend-request" data-targetUser="<%=profile_user.id%>">Reject Friend Request</a>
                             <% } else if(friends){ %>
-                               <a href="/users/friends/viewFriends/<%=profile_user.id%>" class="btn btn-success view-friends" data-targetUser="<%=profile_user.id%>">View Friends</a>
+                               <a href="/users/friends/getFriends/<%=profile_user.id%>" class="btn btn-success view-friends" data-targetUser="<%=profile_user.id%>">View Friends</a>
                                <a href="/users/friends/removeFriend/<%=profile_user.id%>" class="btn btn-danger remove-friend" data-targetUser="<%=profile_user.id%>">Remove Friend</a>                       
                             <% } else { %>
                                <a href="/users/friends/sendRequest/<%=profile_user.id%>" class="btn btn-success send-friend-request" data-targetUser="<%=profile_user.id%>">Send Friend Request</a>
@@ -74,7 +74,6 @@
                         <% if(profileUser.posts.length) { %>
                             <div class="text">
                                 POSTS
-                                <p class="message" style="display:none;">Not friends yet :(</p>
                             </div>
                             <% for (post of profileUser.posts) {%>
                                 <div class="container-fluid toggle-post" id="post-<%=post._id%>" style="padding-left:1rem;padding-right:1rem;">
@@ -154,12 +153,15 @@
                                 </div>
                             <% } %>
                         <% } else { %>
-                             <p class="text">No posts yet :)</p>
+                             <div class="text">
+                                POSTS
+                                <p class="message">No posts yet :)</p>
+                             </div>
                         <% } %>
                     <% } else { %>
                         <div class="text">
                             POSTS
-                            <p class="message">Not friends yet :(</p>
+                            <p class="message">Private Account :(</p>
                         </div>
                     <% } %>
                         </div>

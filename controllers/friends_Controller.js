@@ -3,27 +3,10 @@ const Friendship = require('../models/friendship');
 const Message = require('../models/message');
 
 module.exports.showFriends = async function(req,res){
-    let user = await User.findById(req.params.id).populate('friendships');
-    if(!user||((req.params.id!=req.user.id)&&!user.areFriends.get(req.user.id))){
-        return res.render('friend',{
-            profiles:[],
-            self:true
-        });
-    }
-    else{
-        if(req.params.id==req.user.id){
-            return res.render('friend',{
-                profiles:user.friendships,
-                self:true
-            });
-        }
-        else{
-            return res.render('friend',{
-                profiles:user.friendships,
-                self:false
-            });
-        }
-    }
+    let user = await User.findById(req.user._id).populate('friendships');
+    return res.render('friend',{
+        profiles:user.friendships
+    });
 }
 
 module.exports.users = async function(req,res){
@@ -163,22 +146,6 @@ module.exports.acceptRequest = async function(req,res){
         return res.redirect('back');
     }
     else{
-        let str1 = req.params.id;
-        let str2 = req.user.id;
-        senderUser.haveSent.set(str2,false);
-        receiverUser.haveReceived.set(str1,false);
-        senderUser.requestsSent.pull(req.user._id);
-        receiverUser.requestsReceived.pull(req.params.id);
-        senderUser.friendships.push(req.user._id);
-        receiverUser.friendships.push(req.params.id);
-        senderUser.areFriends.set(str2,true);
-        receiverUser.areFriends.set(str1,true);
-        senderUser.save();
-        receiverUser.save();
-        await Friendship.create({
-            from_user:senderUser,
-            to_user:receiverUser 
-        });
 
         let user = await User.findById(req.params.id)
         .populate({
@@ -207,7 +174,7 @@ module.exports.acceptRequest = async function(req,res){
            }
         });
 
-        if(req.xhr){
+        if(senderUser.areFriends.get(req.user.id)){
             return res.status(200).json({
                 data:{
                     profile:req.params.id,
@@ -217,7 +184,37 @@ module.exports.acceptRequest = async function(req,res){
                 message:"Request Accepted"
             });
         }
-        return res.redirect('back');
+        else{
+            let str1 = req.params.id;
+            let str2 = req.user.id;
+            senderUser.haveSent.set(str2,false);
+            receiverUser.haveReceived.set(str1,false);
+            senderUser.requestsSent.pull(req.user._id);
+            receiverUser.requestsReceived.pull(req.params.id);
+            senderUser.friendships.push(req.user._id);
+            receiverUser.friendships.push(req.params.id);
+            senderUser.areFriends.set(str2,true);
+            receiverUser.areFriends.set(str1,true);
+            senderUser.save();
+            receiverUser.save();
+            await Friendship.create({
+                from_user:senderUser,
+                to_user:receiverUser 
+            });
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        profile:req.params.id,
+                        profileUser:user,
+                        owner:req.user.id,
+                        newfriends:true
+                    },
+                    message:"Request Accepted"
+                });
+            }
+            return res.redirect('back');
+        }
     }
 }
 
@@ -250,9 +247,9 @@ module.exports.removeFriend = async function(req,res){
             console.log(friendship);
             if(friendship){
                 removedSuccessfully = true;
+                friendship.remove();
+                await Message.deleteMany({friendship:friendship});
             }
-            friendship.remove();
-            await Message.deleteMany({friendship:friendship});
         }
         if(req.xhr){
             return res.status(200).json({
@@ -295,3 +292,31 @@ module.exports.sendMessage = async function(req,res){
         });
     }
 }
+
+module.exports.getFriends = async function(req,res){
+    let firstCondition = req.params.id==req.user.id;
+    let user = await User.findById(req.params.id).populate('friendships');
+    let secondConditon = !user.areFriends.get(req.user.id);
+
+    console.log('Reached');
+
+    if(firstCondition||secondConditon){
+        console.log('Li');
+        return res.status(200).json({
+            data: {
+                friends:[]
+            },
+            message:"Unauthorized!"
+        });
+    }
+    else{
+        console.log('Ri');
+        return res.status(200).json({
+            data: {
+                friends:user.friendships
+            },
+            message:"Friends Fetched!"
+        });
+    }
+}
+
