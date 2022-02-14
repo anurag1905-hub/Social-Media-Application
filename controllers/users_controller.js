@@ -5,6 +5,8 @@ const resetPassword = require('../models/reset-password');
 const jwt = require('jsonwebtoken');  // Used to generate the token.
 const queue = require('../config/kue');
 const resetPasswordWorker = require('../workers/reset_password_worker');
+const verifyEmailWorker = require('../workers/verify_email_worker');
+const verifyEmail = require('../models/verifyEmail');
 
 module.exports.profile = async function(req,res){
     let user = await User.findById(req.params.id);
@@ -108,26 +110,76 @@ module.exports.signup = function(req,res){
 }
 
 //get the sign up data
-module.exports.create = function(req,res){
-    User.findOne({email:req.body.email},function(err,user){
-        if(err){
-            console.log('Error in finding the user ',err);
-            return res.redirect('back');
-        }
-        if(!user){
-            User.create(req.body,function(err,user){
-                if(err){
-                    console.log('Error in creating the user ',err);
-                    return res.redirect('back');
-                }
-                return res.redirect('/users/login');
-            });
+module.exports.create = async function(req,res){
+
+    try{
+        let user = await User.findOne({email:req.body.email});
+        if(user){
+            console.log(user);
+            return res.redirect('/users/signup');
         }
         else{
+
+            let verifyemail = await verifyEmail.create({
+                email:req.body.email,
+                accesstoken: jwt.sign({email:req.body.email},'secrettobekept',{expiresIn:'10000000'}),
+                isValid: true,
+                password:req.body.password,
+                name:req.body.name
+            });
+
+            //emailVerificationMailer.verify(verifyemail);
+
+            let job = queue.create('verifyEmail',verifyemail).save(function(err){
+                if(err){
+                    console.log('Error in creating a queue');
+                }
+                else{
+                    console.log(job.id);
+                }
+             });
+
+            return res.render('notification-template',{
+                message:"An email has been sent to your email account for verification"
+            });
+        }
+    }catch(err){
+        console.log('Error',err);
+        return res.redirect('/users/signup');
+    }
+    
+}
+
+module.exports.verifyUserEmail = async function(req,res){
+    try{
+        let accessToken = req.params.token;
+        let email_to_verify = await verifyEmail.findOne({accesstoken:accessToken});
+        if(email_to_verify){
+            let user = await User.create({
+                email:email_to_verify.email,
+                password:email_to_verify.password,
+                name:email_to_verify.name
+            });
+
+            await verifyEmail.deleteMany({email:email_to_verify.email});
+
+            email_to_verify.remove();
+
+            req.flash('success','Email Verified');
             return res.redirect('/users/login');
         }
-    });
+        else{
+            return res.render('notification-template',{
+                message:"Invalid or expired token"
+            });
+        }
+    }catch(err){
+        console.log('Error while resetting password',err);
+        return res.redirect('/users/login');
+    }
 }
+
+
 
 module.exports.feed = async function (req,res){
     let user = await User.findById(req.user._id)
@@ -274,7 +326,9 @@ module.exports.sendResetLink = async function(req,res){
                 console.log(job.id);
             }
          });
-        return res.end('A link to reset password has been sent to your email account');
+         return res.render('notification-template',{
+            message:"A link to reset password has been sent to your email account"
+         });
     }catch(err){
         console.log('Unable to send reset Password link',err);
         return res.redirect('back');
@@ -291,7 +345,9 @@ module.exports.resetPassword = async function(req,res){
             });
         }
         else{
-            return res.end('Invalid or expired token');
+            return res.render('notification-template',{
+                message:"Invalid or Expired Token"
+            });
         }
     }catch(err){
         console.log('Error while resetting password',err);
@@ -317,9 +373,11 @@ module.exports.changePassword = async function(req,res){
         if(user){
             user.password = password;
             user.save();
-            user_account.isValid=false;
-            user_account.save();
-            //console.log(user_account.isValid);
+            
+            await resetPassword.deleteMany({user:user_account.user});
+
+            user_account.remove();
+            
             return res.redirect('/users/login');
         }
         else{
@@ -328,7 +386,9 @@ module.exports.changePassword = async function(req,res){
         }
     }
     else{
-         return res.send('Invalid or Expired Token');
+        return res.render('notification-template',{
+            message:"Invalid or Expired Token"
+        });
     }
 }
 

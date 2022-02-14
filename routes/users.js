@@ -30,6 +30,7 @@ router.post('/reset-password',usersController.sendResetLink);
 router.get('/reset-password/:token',usersController.resetPassword);
 router.post('/changePassword/:token',usersController.changePassword);
 router.get('/chatbox',passport.checkAuthentication,usersController.chatbox);
+router.get('/verify-email/:token',usersController.verifyUserEmail);
 
 module.exports = router;
 
