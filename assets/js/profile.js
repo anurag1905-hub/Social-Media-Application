@@ -1,5 +1,5 @@
 {
-    function getPost(post,profileUser){
+    function getPost(post,profileUser,creationDate ){
         return $(`<div class="container-fluid toggle-post" id="post-${post._id}" style="padding-left:1rem;padding-right:1rem;">
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
@@ -7,7 +7,7 @@
                     <img src="${profileUser.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${post.user._id}">${post.user.name}</a>
                 </div>
                 <div style="font-weight:750;">
-                     at ${post.time}
+                    ${creationDate} at ${post.time}
                 </div>
             </div>
             <!-- convert string to html -->
@@ -48,14 +48,14 @@
     </div>`);
     }
 
-    function getComment(comment,post){
+    function getComment(comment,post,commentCreationDate){
         return $(`<div class="card  comments-list-container${post._id} comment-group" id="comment-${comment._id}" style="margin-right:0px;margin-bottom:1rem;">
                 <div class="card-header bg-success comment-info flex-wrapper" style="height:3rem;"> 
                     <div class="profile-link-comment" style="font-weight:700;">
                         <img src="${comment.user.avatar}" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/${comment.user._id}">${comment.user.name}</a>&nbsp;
                     </div>
                     <div>
-                        at ${comment.time}
+                       ${commentCreationDate} at ${comment.time}
                     </div>
                 </div>
                 <div class="card-body comment-content-${comment._id}">    
@@ -72,7 +72,11 @@
     }
 
     function getCompletePost(post,profileUser,owner){
-        let postToBeAdded = getPost(post,profileUser);
+        let newdate = new Date(post.createdAt);
+        console.log(newdate);
+        let creationDate = newdate.toDateString();
+
+        let postToBeAdded = getPost(post,profileUser,creationDate );
 
         new ToggleLike($(' .toggle-like-button', postToBeAdded));
 
@@ -80,7 +84,10 @@
         let target = $(postToBeAdded).find(`.comments-section${post._id}`);
         
         for(comment of post.comments){
-            let commentToBeAdded = getComment(comment,post);
+            let commentCreationDate = new Date(comment.createdAt);
+            commentCreationDate = commentCreationDate.toDateString();
+
+            let commentToBeAdded = getComment(comment,post,commentCreationDate);
             if(comment.user._id==owner){
                 let targetComment = $(commentToBeAdded).find(`#delete`);
                 targetComment.append(
@@ -172,7 +179,7 @@
                     }
 
                 },error:function(err){
-                        console.log('Error')
+                    console.log('Error');
                 }
             });
             $('.accept-friend-request').replaceWith(`
@@ -195,7 +202,7 @@
                 success:function(data){
                     $('.accept-friend-request').remove();
                 },error:function(err){
-                        console.log('Error')
+                    console.log('Error');
                 }
             });
             $('.reject-friend-request').replaceWith(`
