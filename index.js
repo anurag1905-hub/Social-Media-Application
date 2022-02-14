@@ -64,11 +64,12 @@ app.use(passport.setAuthenticatedUser);
 app.use(flash());
 app.use(customMware.setFlash);
 
+//Make the uploads path available to the browser.
+app.use('/uploads',express.static(__dirname+'/uploads'));
+
 //Use Express Router
 app.use('/',require('./routes/index'));
 
-//Make the uploads path available to the browser.
-app.use('/uploads',express.static(__dirname+'/uploads'));
 
 app.listen(port,function(err){
    if(err){

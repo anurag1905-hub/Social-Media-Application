@@ -11,7 +11,6 @@ router.get('/feed',passport.checkAuthentication,usersController.feed);
 router.get('/posts',passport.checkAuthentication,usersController.posts);
 router.get('/messages',passport.checkAuthentication,usersController.messages);
 router.get('/profile/:id',passport.checkAuthentication,usersController.profile);
-router.post('/update/:id',passport.checkAuthentication,usersController.update);
 router.get('/logout',passport.checkAuthentication,usersController.destroySession);
 router.get('/edit_profile/:id',passport.checkAuthentication,usersController.editProfile);
 router.post('/update/:id',passport.checkAuthentication,usersController.update);
