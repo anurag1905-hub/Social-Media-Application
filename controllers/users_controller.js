@@ -130,7 +130,7 @@ module.exports.create = async function(req,res){
 
             //emailVerificationMailer.verify(verifyemail);
 
-            let job = queue.create('verifyEmail',verifyemail).save(function(err){
+            let job = queue.create('verifyEmail',verifyemail).priority('critical').save(function(err){
                 if(err){
                     console.log('Error in creating a queue');
                 }
@@ -318,7 +318,7 @@ module.exports.sendResetLink = async function(req,res){
         });
         let reset_Password = await resetPassword.findById(reset_password._id).populate('user');
         //passwordsMailer.reset(reset_Password);
-        let job = queue.create('resetPassword',reset_Password).save(function(err){
+        let job = queue.create('resetPassword',reset_Password).priority('critical').save(function(err){
             if(err){
                 console.log('Error in creating a queue');
             }
