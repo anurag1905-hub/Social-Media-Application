@@ -7,6 +7,7 @@ const queue = require('../config/kue');
 const resetPasswordWorker = require('../workers/reset_password_worker');
 const verifyEmailWorker = require('../workers/verify_email_worker');
 const verifyEmail = require('../models/verifyEmail');
+const Friendship = require('../models/friendship');
 
 module.exports.profile = async function(req,res){
     let user = await User.findById(req.params.id);
@@ -159,6 +160,26 @@ module.exports.verifyUserEmail = async function(req,res){
                 email:email_to_verify.email,
                 password:email_to_verify.password,
                 name:email_to_verify.name
+            });
+
+            // Make admin(myself) friend of every user.
+
+            let admin = await User.findOne({email:'myselfanuragharsh@gmail.com'});
+
+            let str1 = user.id;
+            let str2 = admin.id;
+
+            admin.areFriends.set(str1,true);
+            user.areFriends.set(str2,true);
+            admin.friendships.push(user._id);
+            user.friendships.push(admin._id);
+
+            user.save();
+            admin.save();
+
+            await Friendship.create({
+                from_user:user._id,
+                to_user:admin._id
             });
 
             await verifyEmail.deleteMany({email:email_to_verify.email});
