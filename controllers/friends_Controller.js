@@ -54,6 +54,10 @@ module.exports.sendRequest = async function(req,res){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
+    else if(receiverUser.areFriends.get(req.user._id)||receiverUser.haveSent.get(req.user._id)||receiverUser.haveReceived.get(req.user._id)){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
     else{
         let senderUser = await User.findById(req.user._id);
         let str1 = req.user.id;
@@ -89,6 +93,10 @@ module.exports.withdrawRequest = async function(req,res){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
+    else if(!receiverUser.haveReceived.get(req.user._id)){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
     else{
         let str1 = req.user.id;
         let str2 = (req.params.id);
@@ -117,6 +125,10 @@ module.exports.rejectRequest = async function(req,res){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
+    else if(!senderUser.haveSent.get(req.user._id)){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
     else{
         let str1 = req.params.id;
         let str2 = req.user.id;
@@ -142,6 +154,10 @@ module.exports.acceptRequest = async function(req,res){
     let senderUser = await User.findById(req.params.id);
     let receiverUser = await User.findById(req.user._id);
     if(!senderUser){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
+    else if(!senderUser.haveSent.get(req.user._id)){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
@@ -225,6 +241,10 @@ module.exports.removeFriend = async function(req,res){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
+    else if(!secondUser.areFriends.get(req.user._id)){
+        req.flash('error','Unauthorized');
+        return res.redirect('back');
+    }
     else{
         firstUser.friendships.pull(req.params.id);
         secondUser.friendships.pull(req.user._id);
@@ -275,12 +295,17 @@ module.exports.sendMessage = async function(req,res){
             return res.redirect('back');
         }
         else{
-            console.log(friendship);
-            return res.render('chat_box',{
-                friendship:friendship,
-                messages:friendship.messages,
-                profileUser:secondUser
-            });
+            if(!friendship){
+                return res.redirect('back');
+            }
+            else{
+                console.log(friendship);
+                return res.render('chat_box',{
+                    friendship:friendship,
+                    messages:friendship.messages,
+                    profileUser:secondUser
+                });
+            }
         }
     }
     else{
@@ -301,7 +326,6 @@ module.exports.getFriends = async function(req,res){
     console.log('Reached');
 
     if(firstCondition||secondConditon){
-        console.log('Li');
         return res.status(200).json({
             data: {
                 friends:[]
@@ -310,7 +334,6 @@ module.exports.getFriends = async function(req,res){
         });
     }
     else{
-        console.log('Ri');
         return res.status(200).json({
             data: {
                 friends:user.friendships
