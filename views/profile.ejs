@@ -78,7 +78,7 @@
                             <% for (post of profileUser.posts) {%>
                                 <div class="container-fluid toggle-post" id="post-<%=post._id%>" style="padding-left:1rem;padding-right:1rem;">
                                     <div class="card" style="padding:1rem;margin-bottom:2rem;">
-                                        <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
+                                        <div class="card-header post-info flex-wrapper" style="height:3.5rem;background-color: lightblue;">
                                             <div class="profile-link-post" style="font-weight:700;">
                                                 <img src="<%=profileUser.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=post.user._id%>"><%= post.user.name %></a>
                                             </div>
@@ -126,7 +126,7 @@
                                                             <div class="profile-link-comment" style="font-weight:700;">
                                                                 <img src="<%=comment.user.avatar%>" width="30" height="30" class="rounded-circle"> &nbsp; <a href="/users/profile/<%=comment.user._id%>"><%=comment.user.name%></a>&nbsp;
                                                             </div>
-                                                            <div>
+                                                            <div class="comment-creation-date">
                                                                 <%=comment.createdAt.toDateString()%> at <%=comment.time%>
                                                             </div>
                                                         </div>

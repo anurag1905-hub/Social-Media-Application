@@ -133,6 +133,11 @@ a {
 }
 
 @media screen and (max-width:1000px) {
+
+    html{
+        font-size:14px;
+    }
+
     .wrapper{
         margin-top:5rem;
         margin-bottom:2rem;
@@ -140,7 +145,7 @@ a {
         flex-direction: column;
 
         .profile-container{
-            height:50vh;
+            height:20vh;
             width:50%;
             border:0px;
             margin-left:auto;
@@ -200,4 +205,42 @@ a {
 
 .message{
     color:red;
+}
+
+@media screen and (max-width:800px){
+    html{
+        font-size:12px;
+    }
+
+    .profile-link-post, .profile-link-comment{
+        img {
+            width:20px;
+            height:20px;
+        }
+    }
+
+    .comment-creation-date{
+        font-size:6px;
+    }
+}
+
+@media screen and (max-width:400px){
+    html{
+        font-size:8px;
+    }
+
+    .profile-link-post, .profile-link-comment{
+        img {
+            width:15px;
+            height:15px;
+        }
+    }
+
+    .comment-creation-date{
+        font-size:6px;
+    }
+}
+
+.profile-buttons{
+    height:1rem !important;
 }
