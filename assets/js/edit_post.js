@@ -2,7 +2,6 @@
     function editPost(){
         $('.edit-post').click(function(event){
            event.preventDefault();
-           console.log('prevented');
            let targetPost = $(this).attr("data-targetPost");
            $(`.post-content-${targetPost}`).attr('contenteditable','true');
            $(`.post-content-${targetPost}`).css("border","2px solid black");
@@ -16,7 +15,6 @@
     function savePost(){
         $('.save-post').click(function(event){
             event.preventDefault();
-            console.log('Saving post prevented');
             let targetPost = $(this).attr("data-targetPost");
             // To pass html code with QueryString use encodeURIComponent otherwise full html is not sent.
             let newtext = encodeURIComponent($(`.post-content-${targetPost}`).html());
@@ -25,7 +23,6 @@
                 type:'get',
                 url:`/posts/save/?id=${targetPost}&&content=${newtext}`,
                 success: function(data){
-                    console.log('post saved');
                     // decodeURIComponent is used to decode the URI
                     $(`.post-content-${targetPost}`).html(decodeURIComponent(newtext));
                 },

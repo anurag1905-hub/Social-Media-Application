@@ -40,8 +40,6 @@ class PostComments{
                 editComment();
                 saveComment();
 
-                //console.log($(' .delete-comment-button', newComment));
-
                 $(`.comment-content-input-${postId}`).val("");
 
                 new Noty({
@@ -88,15 +86,12 @@ class PostComments{
   }
   
   deleteComment(deleteLink,postId){
-      console.log('Reached');
       $(deleteLink).click(function(e){
-        console.log('prevented');
           e.preventDefault();
           $.ajax({
               type: 'get',
               url: $(deleteLink).prop('href'),
               success: function(data){
-                console.log('DELETED');
                  let commentsCount = parseInt($(`.toggle-comments-button-${postId}`).attr('data-comments'));
                  commentsCount-=1;
                  $(`.toggle-comments-button-${postId}`).attr('data-comments',commentsCount);
@@ -142,7 +137,6 @@ class PostComments{
 
                     
                     new PostComments(data.data.post._id);
-                    //console.log(data.data.post._id);
 
                     new ToggleLike($(' .toggle-like-button', newPost));
 
@@ -166,7 +160,6 @@ class PostComments{
 
      // method to create a post in DOM
      let newPostDom = function(post,obj){
-         console.log(post);
         return $(`<div class="container-fluid" id="post-${post._id}" style="padding:0px;">
         <div class="card" style="padding:1rem;margin-bottom:2rem;">
             <div class="card-header post-info flex-wrapper" style="height:3rem;background-color: lightblue;">
@@ -215,7 +208,6 @@ class PostComments{
 
       // method to delete a post from DOM
     let deletePost = function(deleteLink){
-        console.log(deleteLink);
         $(deleteLink).click(function(e){
             e.preventDefault();
 

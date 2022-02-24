@@ -73,7 +73,6 @@
 
     function getCompletePost(post,profileUser,owner){
         let newdate = new Date(post.createdAt);
-        console.log(newdate);
         let creationDate = newdate.toDateString();
 
         let postToBeAdded = getPost(post,profileUser,creationDate );
@@ -110,8 +109,6 @@
     function sendFriendRequest(){
         $('.send-friend-request').click(function(event){
             event.preventDefault();
-            console.log('Clicked',this);
-            console.log($(this).prop('href'));
             let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                type:'get',
@@ -119,7 +116,7 @@
                success:function(data){
                     
                 },error:function(err){
-                    console.log('Error');
+                    console.log(err.responseText);
                 }
             });
 
@@ -134,8 +131,6 @@
     function withdrawFriendRequest(){
         $('.withdraw-friend-request').click(function(event){
             event.preventDefault();
-            console.log('Withdrawal Prevented');
-            console.log($(this).prop('href'));
             let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
@@ -143,7 +138,7 @@
                 success:function(data){ 
                     
                 },error:function(err){
-                    console.log('Error');
+                    console.log(err.responseText);
                 }
             });
             $('.withdraw-friend-request').replaceWith(`
@@ -156,11 +151,8 @@
     function acceptFriendRequest(){
        $('.accept-friend-request').click(function(event){
             event.preventDefault();
-            console.log('Accepting Prevented');
-            console.log($(this).prop('href'));
             let targetUser = $(this).attr("data-targetUser");
             let newFriends;
-            console.log($('.message'));
             $.ajax({
                 async:false,
                 type:'get',
@@ -188,12 +180,10 @@
                     }
 
                 },error:function(err){
-                    console.log('Error');
+                    console.log(err.responseText);
                 }
             });
-            console.log(newFriends);
             if(newFriends){
-                console.log('entered');
                 $('.accept-friend-request').replaceWith(`
                 <a href="/users/friends/getFriends/${targetUser}" class="btn btn-success view-friends" data-targetUser="${targetUser}">View Friends</a>
                 <a href="/users/friends/removeFriend/${targetUser}" class="btn btn-danger remove-friend" data-targetUser="${targetUser}">Remove Friend</a>
@@ -212,8 +202,6 @@
     function rejectFriendRequest(){
         $('.reject-friend-request').click(function(event){
             event.preventDefault();
-            console.log('Rejection Prevented');
-            console.log($(this).prop('href'));
             let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
@@ -221,7 +209,7 @@
                 success:function(data){
                     $('.accept-friend-request').remove();
                 },error:function(err){
-                    console.log('Error');
+                    console.log(err.responseText);
                 }
             });
             $('.reject-friend-request').replaceWith(`
@@ -234,7 +222,6 @@
     function removeFriend(){
         $('.remove-friend').click(function(event){
            event.preventDefault();
-           console.log('Friend Removal Prevented');
            let targetUser = $(this).attr("data-targetUser");
             $.ajax({
                 type:'get',
@@ -248,7 +235,7 @@
 
 
                 },error:function(err){
-                    console.log('Error');
+                    console.log(err.responseText);
                 }
             });
             $('.remove-friend').replaceWith(`
@@ -290,8 +277,6 @@
             $('.toggle-post').remove();
 
             let targetUser = $(this).attr("data-targetUser");
-
-            console.log($(this).prop('href'));
 
             $.ajax({
                type:'get',

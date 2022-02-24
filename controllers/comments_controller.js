@@ -35,14 +35,10 @@ module.exports.create = async function(req,res){
                 post:post._id,
                 time:time
             });
-            console.log(comment);
             let profileUser = await User.findById(req.user._id);
             let job = queue.create('emails',post).priority('normal').save(function(err){
                if(err){
                    console.log('Error in creating a queue');
-               }
-               else{
-                   console.log(job.id);
                }
             });
             let obj = {
@@ -68,14 +64,12 @@ module.exports.create = async function(req,res){
             return res.redirect('back');
         }
     }catch(err){
-        console.log('Error',err);
         return;
     }
 }
 
 module.exports.destroy = async function(req,res){
     try{
-        console.log(req.params.id);
         let comment = await Comment.findById(req.params.id);
         if(comment&&(comment.user==req.user.id)){
             let postId = comment.post;

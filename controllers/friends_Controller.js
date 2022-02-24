@@ -27,8 +27,6 @@ module.exports.users = async function(req,res){
         }
     }
 
-    console.log(profiles);
-
     return res.render('user',{
         profiles:profiles
     });
@@ -72,7 +70,6 @@ module.exports.sendRequest = async function(req,res){
         receiverUser.requestsReceived.push(senderUser);
         receiverUser.haveReceived.set(str1,true);
         receiverUser.save();
-        console.log('Reached till the end');
         if(req.xhr){
             return res.status(200).json({
                 data:{
@@ -256,7 +253,6 @@ module.exports.removeFriend = async function(req,res){
         secondUser.save();
         let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser});
         let removedSuccessfully = false;
-        console.log(friendship);
         if(friendship){
             friendship.remove();
             removedSuccessfully = true;
@@ -264,7 +260,6 @@ module.exports.removeFriend = async function(req,res){
         }
         else{
             friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser});
-            console.log(friendship);
             if(friendship){
                 removedSuccessfully = true;
                 friendship.remove();
@@ -299,7 +294,6 @@ module.exports.sendMessage = async function(req,res){
                 return res.redirect('back');
             }
             else{
-                console.log(friendship);
                 return res.render('chat_box',{
                     friendship:friendship,
                     messages:friendship.messages,
@@ -309,7 +303,6 @@ module.exports.sendMessage = async function(req,res){
         }
     }
     else{
-        console.log(friendship);
         return res.render('chat_box',{
             friendship:friendship,
             messages:friendship.messages,
@@ -322,8 +315,6 @@ module.exports.getFriends = async function(req,res){
     let firstCondition = req.params.id==req.user.id;
     let user = await User.findById(req.params.id).populate('friendships');
     let secondConditon = !user.areFriends.get(req.user.id);
-
-    console.log('Reached');
 
     if(firstCondition||secondConditon){
         return res.status(200).json({

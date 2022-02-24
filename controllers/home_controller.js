@@ -32,7 +32,6 @@ module.exports.home = async function(req,res){
                sort:{createdAt:-1},
             }
        });
-     console.log(profileUser);
      return res.render('landingPage',{
         profileUser:profileUser
      });

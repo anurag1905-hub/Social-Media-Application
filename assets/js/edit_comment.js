@@ -2,7 +2,6 @@
     function editComment(){
         $('.edit-comment').click(function(event){
            event.preventDefault();
-           console.log('prevented');
            let targetComment = $(this).attr("data-targetComment");
            $(`.comment-content-${targetComment}`).attr('contenteditable','true');
            $(`.comment-content-${targetComment}`).css("border","2px solid black");
@@ -16,7 +15,6 @@
     function saveComment(){
         $('.save-comment').click(function(event){
             event.preventDefault();
-            console.log('Saving comment prevented');
             let targetComment = $(this).attr("data-targetComment");
             // To pass html code with QueryString use encodeURIComponent otherwise full html is not sent.
             let newtext = encodeURIComponent($(`.comment-content-${targetComment}`).html());
@@ -25,7 +23,6 @@
                 type:'get',
                 url:`/comments/save/?id=${targetComment}&&content=${newtext}`,
                 success: function(data){
-                    console.log('comment saved');
                     // decodeURIComponent is used to decode the URI
                     $(`.comment-content-${targetComment}`).html(decodeURIComponent(newtext));
                 },

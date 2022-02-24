@@ -51,7 +51,6 @@ module.exports.create = async function(req,res){
         return res.redirect('back');
     }catch(err){
         req.flash('error','cannot publish the post');
-        console.log('Error',err);
         return;
     }
  }
@@ -91,7 +90,6 @@ module.exports.destroy = async function(req,res){
             return res.redirect('back');
         }
     }catch(err){
-        console.log('Error',err);
         req.flash('error','cant delete the post');
         return;
     } 
@@ -104,8 +102,6 @@ module.exports.destroy = async function(req,res){
  module.exports.save = async function(req,res){
      let postId = req.query.id;
      let newContent = decodeURI(req.query.content);
-     console.log(postId);
-     console.log(newContent);
      let post = await Post.findById(postId);
      if(!post||post.user!=req.user.id){
         if(req.xhr){

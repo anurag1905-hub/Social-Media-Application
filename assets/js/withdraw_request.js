@@ -2,8 +2,6 @@
     function withdrawFriendRequest(){
         $('.withdraw-friend-request').click(function(event){
             event.preventDefault();
-            console.log('Withdrawal Prevented');
-            console.log($(this).prop('href'));
             $.ajax({
                 type:'get',
                 url:$(this).prop('href'),
@@ -19,7 +17,7 @@
                     
                    }).show();
                 },error:function(err){
-                    console.log('Error')
+                    console.log(err.responseText);
 
                     new Noty({
                         theme: 'relax',

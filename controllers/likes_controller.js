@@ -39,7 +39,6 @@ module.exports.toggleLike = async function(req,res){
            }
        });
    }catch(err){
-       console.log('Error',err);
        return res.json(500,{
            message:'Internal Server Error'
        });

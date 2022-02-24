@@ -60,7 +60,6 @@ module.exports.update = async function(req,res) {
             let user = await User.findById(req.params.id);
             User.uploadedAvatar(req,res,function(err){
                 if(err){
-                    console.log('****Multer Error:',err);
                     req.flash('error','Unable to update Profile');
                     return res.redirect('back');
                 }
@@ -116,7 +115,6 @@ module.exports.create = async function(req,res){
     try{
         let user = await User.findOne({email:req.body.email});
         if(user){
-            console.log(user);
             return res.redirect('/users/signup');
         }
         else{
@@ -135,9 +133,6 @@ module.exports.create = async function(req,res){
                 if(err){
                     console.log('Error in creating a queue');
                 }
-                else{
-                    console.log(job.id);
-                }
              });
 
             return res.render('notification-template',{
@@ -145,7 +140,6 @@ module.exports.create = async function(req,res){
             });
         }
     }catch(err){
-        console.log('Error',err);
         return res.redirect('/users/signup');
     }
     
@@ -195,7 +189,6 @@ module.exports.verifyUserEmail = async function(req,res){
             });
         }
     }catch(err){
-        console.log('Error while resetting password',err);
         return res.redirect('/users/login');
     }
 }
@@ -329,7 +322,6 @@ module.exports.sendResetLink = async function(req,res){
     try{
         let user = await User.findOne({email:req.body.email});
         if(!user){
-            console.log('User not found!');
             return res.redirect('back');
         }
         let reset_password = await resetPassword.create({
@@ -343,15 +335,11 @@ module.exports.sendResetLink = async function(req,res){
             if(err){
                 console.log('Error in creating a queue');
             }
-            else{
-                console.log(job.id);
-            }
          });
          return res.render('notification-template',{
             message:"A link to reset password has been sent to your email account"
          });
     }catch(err){
-        console.log('Unable to send reset Password link',err);
         return res.redirect('back');
     }
 }
@@ -371,7 +359,6 @@ module.exports.resetPassword = async function(req,res){
             });
         }
     }catch(err){
-        console.log('Error while resetting password',err);
         return res.redirect('/users/login');
     }
 }
@@ -379,18 +366,13 @@ module.exports.resetPassword = async function(req,res){
 module.exports.changePassword = async function(req,res){
     let password = req.body.password;
     let confirm_password = req.body.confirmPassword;
-    //console.log(req.body);
     if(password!=confirm_password){
-        //console.log(password);
-        //console.log(confirm_password);
         return res.redirect('back');
     }
     let accessToken = req.params.token;
     let user_account = await resetPassword.findOne({accesstoken:accessToken});
-    //console.log(user_account.isValid);
     if(user_account&&user_account.isValid==true){
         let user = await User.findById(user_account.user);
-        //console.log(user);
         if(user){
             user.password = password;
             user.save();
@@ -402,7 +384,6 @@ module.exports.changePassword = async function(req,res){
             return res.redirect('/users/login');
         }
         else{
-            console.log('Could not find the user');
             return res.redirect('back');
         }
     }
