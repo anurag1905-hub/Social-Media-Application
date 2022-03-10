@@ -175,7 +175,7 @@
 
                     if(data.data.profileUser.posts.length==0){
                         $('.text').append(`
-                           <p class="message"> No posts yet :) </p>
+                           <p class="message responsive-text"> No posts yet :) </p>
                         `);
                     }
 
@@ -243,7 +243,7 @@
             `);
             if($('.message').length==0){
                 $('.text').append(`
-                    <p class="message">Private Account :(</p>
+                    <p class="message responsive-text">Private Account :(</p>
                 `);
             }
             else{

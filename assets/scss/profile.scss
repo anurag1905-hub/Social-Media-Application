@@ -57,6 +57,7 @@ body{
         }
     }
     .posts-container{
+        margin-top:3rem;
         min-height:52vh;
         height:auto;
         width:75%;
@@ -134,7 +135,7 @@ a {
 
 @media screen and (max-width:1000px) {
 
-    html{
+    .responsive-text{
         font-size:14px;
     }
 
@@ -163,7 +164,7 @@ a {
         
             img{
                 width:90%;
-                height:90%;
+                height:150px;
                 margin:auto;
                 display:inline-block;
                 border-radius:50%;
@@ -207,8 +208,9 @@ a {
     color:red;
 }
 
-@media screen and (max-width:800px){
-    html{
+ @media screen and (max-width:800px){
+
+    .responsive-text{
         font-size:12px;
     }
 
@@ -222,10 +224,11 @@ a {
     .comment-creation-date{
         font-size:6px;
     }
-}
+ }
 
 @media screen and (max-width:400px){
-    html{
+
+    .responsive-text{
         font-size:8px;
     }
 
