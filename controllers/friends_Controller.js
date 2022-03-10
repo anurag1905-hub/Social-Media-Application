@@ -281,16 +281,22 @@ module.exports.removeFriend = async function(req,res){
 }
 
 module.exports.sendMessage = async function(req,res){
+    console.log(req.user._id);
+    console.log(req.params.id);
     let firstUser = await User.findById(req.user._id);
     let secondUser = await User.findById(req.params.id);
+    console.log(firstUser);
+    console.log(secondUser);
     let friendship = await Friendship.findOne({from_user:firstUser,to_user:secondUser}).populate('messages');
     if(!friendship){
         friendship = await Friendship.findOne({from_user:secondUser,to_user:firstUser}).populate('messages');
         if(!friendship){
+            console.log('friendship does not exist');
             return res.redirect('back');
         }
         else{
             if(!friendship){
+                console.log('friendship does not exist');
                 return res.redirect('back');
             }
             else{

@@ -43,7 +43,8 @@ class ChatEngine{
 
             $('#send-message').click(function(){
                 let msg = $('#chat-message-input').val();
-    
+                $('#chat-message-input').val("");
+
                 if (msg != ''){
                     self.socket.emit('send_message', {
                         message: msg,

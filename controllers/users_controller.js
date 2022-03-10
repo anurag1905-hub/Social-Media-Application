@@ -159,23 +159,25 @@ module.exports.verifyUserEmail = async function(req,res){
 
             // Make admin(myself) friend of every user.
 
-            let admin = await User.findOne({email:'myselfanuragharsh@gmail.com'});
+            if(user.email!='myselfanuragharsh@gmail.com'){
+                let admin = await User.findOne({email:'myselfanuragharsh@gmail.com'});
 
-            let str1 = user.id;
-            let str2 = admin.id;
+                let str1 = user.id;
+                let str2 = admin.id;
 
-            admin.areFriends.set(str1,true);
-            user.areFriends.set(str2,true);
-            admin.friendships.push(user._id);
-            user.friendships.push(admin._id);
+                admin.areFriends.set(str1,true);
+                user.areFriends.set(str2,true);
+                admin.friendships.push(user._id);
+                user.friendships.push(admin._id);
 
-            user.save();
-            admin.save();
+                user.save();
+                admin.save();
 
-            await Friendship.create({
-                from_user:user._id,
-                to_user:admin._id
-            });
+                await Friendship.create({
+                    from_user:user._id,
+                    to_user:admin._id
+                });   
+            }
 
             await verifyEmail.deleteMany({email:email_to_verify.email});
 
