@@ -1,11 +1,3 @@
-jQuery.fn.scrollTo = function(elem) {
-    //Reference: https://stackoverflow.com/questions/54768752/autoscroll-div-when-content-is-added
-    if( this[0].scrollTop > this[0].scrollHeight - this[0].offsetHeight - $(elem).height() - 10) {
-        $(this).scrollTop($(this).scrollTop() - $(this).offset().top + $(elem).offset().top);
-    }
-    return this; 
-};
-
 function gotoBottom(id){
     var element = $(`#${id}`);
     var height = element.prop('scrollHeight');
@@ -23,7 +15,6 @@ class ChatEngine{
         if(this.userEmail){
             this.connectionHandler();
         }
- 
         gotoBottom('chat-messages-list');
     }
 
@@ -44,6 +35,7 @@ class ChatEngine{
             $('#send-message').click(function(){
                 let msg = $('#chat-message-input').val();
                 $('#chat-message-input').val("");
+                var ul_element = $('#chat-messages-list');
 
                 if (msg != ''){
                     self.socket.emit('send_message', {
@@ -52,26 +44,22 @@ class ChatEngine{
                         chatroom: self.chatRoom,
                         sender:self.sender,
                     });
+                    gotoBottom('chat-messages-list');
                 }
             });
     
             self.socket.on('receive_message', function(data){
-    
                 let newMessage = $('<li>');
-    
                 let messageType = 'other-message';
-    
                 if (data.user_email == self.userEmail){
                     messageType = 'self-message';
                 }
-    
                 newMessage.append($('<span>', {
                     'html': data.message
                 }));
-    
                 newMessage.addClass(messageType);
-    
-                $('#chat-messages-list').append(newMessage).scrollTo(newMessage);
+                $('#chat-messages-list').append(newMessage);
+                gotoBottom('chat-messages-list');
             })
 
         });

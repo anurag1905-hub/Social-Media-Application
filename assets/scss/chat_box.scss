@@ -44,7 +44,7 @@ html{
 	    padding: 10px;
 	    height: 65%;
 	    background-color: white;
-	    overflow: auto;
+		overflow-y: scroll;
 
 	    .other-message{
 		    text-align: left;

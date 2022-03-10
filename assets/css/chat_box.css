@@ -35,7 +35,7 @@ html {
     padding: 10px;
     height: 65%;
     background-color: white;
-    overflow: auto; }
+    overflow-y: scroll; }
     #user-chat-box #chat-messages-list .other-message {
       text-align: left;
       padding: 5px; }
