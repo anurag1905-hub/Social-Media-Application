@@ -11,6 +11,8 @@ const sassMiddleware = require('node-sass-middleware');   // Used to convert sas
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
 const passportGoogle = require('./config/passport-google-oauth2-strategy');
+const env = require('./config/environment');
+const path = require('path');
 
 //set up the chat server to be used with socket.io
 const chatServer = require('http').Server(app);
@@ -20,15 +22,15 @@ chatServer.listen(5000);
 console.log('Chat Server is listening on port 5000');
 
 app.use(sassMiddleware({
-    src:'./assets/scss',
-    dest:'./assets/css',
+    src:path.join(__dirname,env.asset_path,'scss'),
+    dest:path.join(__dirname,env.asset_path,'css'),
     debug:true,         // whatever information we see in the terminal. It helps in debugging
     outputStyle:'extended', // use multiple lines
     prefix:'/css'       // place where server should look for css files
 }));
 
 app.use(express.urlencoded());     // so that we can collect form data and store it in req.body 
-app.use(express.static('assets')); // to access static files
+app.use(express.static(env.asset_path)); // to access static files
 app.use(cookieParser());           // set up the cookie parser
 
 app.set('view engine','ejs');      //set up the view engine
@@ -39,7 +41,7 @@ app.set('views','./views');        // specify a folder to look for the views.
 app.use(session({
     name:'socilaMediaApplication',
     // TODO: change the secret before deployment in production mode
-    secret:'webDevelopment',
+    secret:env.session_cookie_key,
     saveUninitialized:false,  //When user is not logged in, don't store extra info in session cookie.
     resave:false,    // Don't save the user's info in session cookie if it has not been changed.
     cookie:{

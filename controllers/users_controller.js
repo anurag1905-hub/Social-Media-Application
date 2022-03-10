@@ -8,6 +8,7 @@ const resetPasswordWorker = require('../workers/reset_password_worker');
 const verifyEmailWorker = require('../workers/verify_email_worker');
 const verifyEmail = require('../models/verifyEmail');
 const Friendship = require('../models/friendship');
+const env = require('../config/environment');
 
 module.exports.profile = async function(req,res){
     let user = await User.findById(req.params.id);
@@ -121,7 +122,7 @@ module.exports.create = async function(req,res){
 
             let verifyemail = await verifyEmail.create({
                 email:req.body.email,
-                accesstoken: jwt.sign({email:req.body.email},'secrettobekept',{expiresIn:'10000000'}),
+                accesstoken: jwt.sign({email:req.body.email},env.jwt_secret,{expiresIn:'10000000'}),
                 isValid: true,
                 password:req.body.password,
                 name:req.body.name
@@ -326,7 +327,7 @@ module.exports.sendResetLink = async function(req,res){
         }
         let reset_password = await resetPassword.create({
             user: user._id,
-            accesstoken: jwt.sign(user.toJSON(),'socialMediaApplication',{expiresIn:'10000000'}),
+            accesstoken: jwt.sign(user.toJSON(),env.jwt_secret,{expiresIn:'10000000'}),
             isValid: true
         });
         let reset_Password = await resetPassword.findById(reset_password._id).populate('user');
