@@ -1,5 +1,5 @@
 node_modules/
-todo
 uploads/
+production_logs/
+todo
 .env
-production_logs/*
