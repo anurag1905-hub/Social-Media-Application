@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');  // Allows us to read and write to a cookie
 const port = 8000;
 const app = express();
+require('./config/view-helper')(app);
 const db = require('./config/mongoose');
 const session = require('express-session'); // to create session cookie and store user information in cookies in an encrypted form.
 const passport = require('passport');  // passport uses session-cookies to store the identity of the authenticated user.

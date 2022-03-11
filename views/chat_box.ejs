@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="/css/chat_box.css">
+        <link rel="stylesheet" type="text/css" href="<%=assetPath('css/chat_box.css')%>" >
     </head>
 </html>
 <body>
@@ -40,7 +40,7 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
-    <script src="/js/chat_engine.js"></script>
+    <script src="<%=assetPath('js/chat_engine.js')%>"></script>
     <script>
         new ChatEngine('user-chat-box','<%=locals.user.email%>','<%=friendship._id%>','<%=locals.user._id%>')
     </script>

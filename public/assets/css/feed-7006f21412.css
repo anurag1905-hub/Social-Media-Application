@@ -1,0 +1,60 @@
+html {
+  font-size: 16px; }
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background-image: url("/images/authentication_background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; }
+
+.heading {
+  font-size: 2rem; }
+
+.header {
+  border-bottom: 4px solid red; }
+
+.navbar-item {
+  background-color: orange;
+  border-right: 4px solid red; }
+
+.box {
+  height: auto;
+  min-height: 70vh;
+  margin: 0px; }
+
+.flex-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+
+.posts-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  .posts-footer div a {
+    font-size: 1rem; }
+    .posts-footer div a:hover {
+      text-decoration: none;
+      color: blue; }
+
+a i:hover {
+  color: red; }
+
+#delete {
+  display: flex;
+  justify-content: space-between; }
+  #delete a:hover {
+    color: red;
+    text-decoration: none; }
+
+.profile-link-post a {
+  text-decoration: none; }
+
+.profile-link-comment a {
+  text-decoration: none;
+  color: white; }
+  .profile-link-comment a:hover {
+    color: lightgray; }
