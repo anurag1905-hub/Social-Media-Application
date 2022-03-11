@@ -154,7 +154,7 @@ module.exports.acceptRequest = async function(req,res){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
-    else if(!senderUser.haveSent.get(req.user._id)){
+    else if(!senderUser.haveSent.get(req.user._id)&&!senderUser.areFriends.get(req.user.id)){
         req.flash('error','Unauthorized');
         return res.redirect('back');
     }
@@ -188,14 +188,19 @@ module.exports.acceptRequest = async function(req,res){
         });
 
         if(senderUser.areFriends.get(req.user.id)){
-            return res.status(200).json({
-                data:{
-                    profile:req.params.id,
-                    profileUser:user,
-                    owner:req.user.id
-                },
-                message:"Request Accepted"
-            });
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        profile:req.params.id,
+                        profileUser:user,
+                        owner:req.user.id
+                    },
+                    message:"Request Accepted"
+                });
+            }
+            else{
+                return res.redirect('back');
+            }
         }
         else{
             let str1 = req.params.id;
@@ -226,7 +231,9 @@ module.exports.acceptRequest = async function(req,res){
                     message:"Request Accepted"
                 });
             }
-            return res.redirect('back');
+            else{
+                return res.redirect('back');
+            }
         }
     }
 }
@@ -275,8 +282,9 @@ module.exports.removeFriend = async function(req,res){
                 message:"Removed from Friends"
             });
         }
-
-        return res.redirect('back');
+        else{
+            return res.redirect('back');
+        }
     }
 }
 
@@ -323,20 +331,24 @@ module.exports.getFriends = async function(req,res){
     let secondConditon = !user.areFriends.get(req.user.id);
 
     if(firstCondition||secondConditon){
-        return res.status(200).json({
-            data: {
-                friends:[]
-            },
-            message:"Unauthorized!"
-        });
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    friends:[]
+                },
+                message:"Unauthorized!"
+            });
+        }
     }
     else{
-        return res.status(200).json({
-            data: {
-                friends:user.friendships
-            },
-            message:"Friends Fetched!"
-        });
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    friends:user.friendships
+                },
+                message:"Friends Fetched!"
+            });
+        }
     }
 }
 
