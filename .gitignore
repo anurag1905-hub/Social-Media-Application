@@ -2,3 +2,4 @@ node_modules/
 todo
 uploads/
 .env
+production_logs/*
