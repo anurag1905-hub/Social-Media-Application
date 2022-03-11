@@ -1,0 +1,5 @@
+::1 - - [11/Mar/2022:14:40:07 +0000] "GET / HTTP/1.1" 200 14469 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+::1 - - [11/Mar/2022:14:40:10 +0000] "GET /favicon.ico HTTP/1.1" 200 400 "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+::1 - - [11/Mar/2022:14:41:43 +0000] "GET /users/login HTTP/1.1" 304 - "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+::1 - - [11/Mar/2022:14:41:43 +0000] "GET /favicon.ico HTTP/1.1" 304 - "http://localhost:8000/users/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+::1 - - [11/Mar/2022:14:41:45 +0000] "GET /favicon.ico HTTP/1.1" 304 - "http://localhost:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"

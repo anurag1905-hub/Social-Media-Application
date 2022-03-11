@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 const customMware = require('./config/middleware');
 const passportGoogle = require('./config/passport-google-oauth2-strategy');
 const env = require('./config/environment');
+const logger = require('morgan');
 const path = require('path');
 
 //set up the chat server to be used with socket.io
@@ -21,13 +22,15 @@ chatServer.listen(5000);
 
 console.log('Chat Server is listening on port 5000');
 
-app.use(sassMiddleware({
-    src:path.join(__dirname,env.asset_path,'scss'),
-    dest:path.join(__dirname,env.asset_path,'css'),
-    debug:true,         // whatever information we see in the terminal. It helps in debugging
-    outputStyle:'extended', // use multiple lines
-    prefix:'/css'       // place where server should look for css files
-}));
+if(env.name == 'development'){
+    app.use(sassMiddleware({
+        src:path.join(__dirname,env.asset_path,'scss'),
+        dest:path.join(__dirname,env.asset_path,'css'),
+        debug:true,         // whatever information we see in the terminal. It helps in debugging
+        outputStyle:'extended', // use multiple lines
+        prefix:'/css'       // place where server should look for css files
+    }));
+}
 
 app.use(express.urlencoded());     // so that we can collect form data and store it in req.body 
 app.use(express.static(env.asset_path)); // to access static files
@@ -68,6 +71,9 @@ app.use(customMware.setFlash);
 
 //Make the uploads path available to the browser.
 app.use('/uploads',express.static(__dirname+'/uploads'));
+
+// Set up Logger
+app.use(logger(env.morgan.mode,env.morgan.options));
 
 //Use Express Router
 app.use('/',require('./routes/index'));
