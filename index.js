@@ -33,7 +33,7 @@ if(env.name == 'development'){
     }));
 }
 
-app.use(express.urlencoded());     // so that we can collect form data and store it in req.body 
+app.use(express.urlencoded({extended:false}));     // so that we can collect form data and store it in req.body 
 app.use(express.static(env.asset_path)); // to access static files
 app.use(cookieParser());           // set up the cookie parser
 
