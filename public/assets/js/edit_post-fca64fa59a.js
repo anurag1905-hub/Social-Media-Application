@@ -1,45 +1,5 @@
-{
-    function editPost(){
-        $('.edit-post').click(function(event){
-           event.preventDefault();
-           let targetPost = $(this).attr("data-targetPost");
-           $(`.post-content-${targetPost}`).attr('contenteditable','true');
-           $(`.post-content-${targetPost}`).css("border","2px solid black");
-           $(`.target-post-${targetPost}`).replaceWith(`
-              <a href="#" class="save-post target-post-${targetPost}" data-targetPost="${targetPost}">Save <i class="fas fa-save"></i></a>
-           `)
-           savePost();
-        });
-    }
-    
-    function savePost(){
-        $('.save-post').click(function(event){
-            event.preventDefault();
-            let targetPost = $(this).attr("data-targetPost");
-            // To pass html code with QueryString use encodeURIComponent otherwise full html is not sent.
-            let newtext = encodeURIComponent($(`.post-content-${targetPost}`).html());
-            if(newtext!=''){
-                $.ajax({
-                type:'get',
-                url:`/posts/save/?id=${targetPost}&&content=${newtext}`,
-                success: function(data){
-                    // decodeURIComponent is used to decode the URI
-                    $(`.post-content-${targetPost}`).html(decodeURIComponent(newtext));
-                },
-                error:function(error){
-                    console.log(error.responseText);
-                }
-                });
-                $(`.post-content-${targetPost}`).attr('contenteditable','false');
-                $(`.post-content-${targetPost}`).css("border","none");
-                $(`.target-post-${targetPost}`).replaceWith(`
-                    <a href="/posts/edit/${targetPost}" class="edit-post target-post-${targetPost}" data-targetPost="${targetPost}">Edit <i class="fas fa-edit"></i></a>
-                `)
-                editPost();
-             }
-        });
-    }
-    savePost();
-    editPost();
-
-}
+function editPost(){$(".edit-post").click(function(t){t.preventDefault();t=$(this).attr("data-targetPost");$(".post-content-"+t).attr("contenteditable","true"),$(".post-content-"+t).css("border","2px solid black"),$(".target-post-"+t).replaceWith(`
+              <a href="#" class="save-post target-post-${t}" data-targetPost="${t}">Save <i class="fas fa-save"></i></a>
+           `),savePost()})}function savePost(){$(".save-post").click(function(t){t.preventDefault();let e=$(this).attr("data-targetPost"),s=encodeURIComponent($(".post-content-"+e).html());""!=s&&($.ajax({type:"get",url:`/posts/save/?id=${e}&&content=`+s,success:function(t){$(".post-content-"+e).html(decodeURIComponent(s))},error:function(t){console.log(t.responseText)}}),$(".post-content-"+e).attr("contenteditable","false"),$(".post-content-"+e).css("border","none"),$(".target-post-"+e).replaceWith(`
+                    <a href="/posts/edit/${e}" class="edit-post target-post-${e}" data-targetPost="${e}">Edit <i class="fas fa-edit"></i></a>
+                `),editPost())})}savePost(),editPost();

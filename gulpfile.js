@@ -3,6 +3,9 @@ const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const rev = require('gulp-rev');
 const del = require('del');
+var uglify = require('gulp-uglify');
+var csso = require('gulp-csso');
+const imagemin = require('gulp-imagemin');
 
 gulp.task('css', function(done){
     gulp.src('./assets/sass/**/*.scss')
@@ -11,6 +14,7 @@ gulp.task('css', function(done){
 
     return gulp.src('./assets/**/*.css')
     .pipe(rev())
+    .pipe(csso())
     .pipe(gulp.dest('./public/assets/'))
     .pipe(rev.manifest('public/assets/rev-manifest.json', {
         base: './public/assets',
@@ -23,6 +27,7 @@ gulp.task('css', function(done){
 gulp.task('js', function (done) {
     gulp.src('./assets/**/*.js')
         .pipe(rev())
+        .pipe(uglify())
         .pipe(gulp.dest('./public/assets/'))
         .pipe(rev.manifest('public/assets/rev-manifest.json', {
             base: './public/assets',
@@ -35,6 +40,7 @@ gulp.task('js', function (done) {
 gulp.task('images', function(done){
     gulp.src('./assets/**/*.+(png|jpg|gif|svg|jpeg)')
     .pipe(rev())
+    .pipe(imagemin())
     .pipe(gulp.dest('./public/assets/'))
     .pipe(rev.manifest('public/assets/rev-manifest.json', {
         base: './public/assets',
