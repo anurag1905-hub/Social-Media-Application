@@ -10,8 +10,8 @@ class ChatEngine{
         this.userEmail=userEmail;
         this.chatRoom = chatRoom;
         this.sender = sender;
-        //this.socket = io.connect('http://localhost:5000');
-        this.socket=io('http://18.221.30.176:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
+        //this.socket = io.connect('http://localhost:5000'); 
+        this.socket=io('http://localhost:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
         if(this.userEmail){
             this.connectionHandler();
         }
