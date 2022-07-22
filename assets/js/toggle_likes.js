@@ -10,7 +10,6 @@ class ToggleLike{
         $(this.toggler).click(function(e){
             e.preventDefault();
             let self = this;
-            //this is a new way of writing ajax, it looks like the same as promises
             $.ajax({
                 type:'POST',
                 url:$(self).attr('href'),
