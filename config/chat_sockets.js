@@ -26,10 +26,7 @@ module.exports.chatSockets = async function(socketServer){
              friendship:data.chatroom,
           });
 
-          console.log(message);
-
           let friendship = await Friendship.findById(data.chatroom);
-          console.log(friendship);
           friendship.messages.push(message);
           friendship.save();
 
