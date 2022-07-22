@@ -101,7 +101,7 @@ module.exports.destroy = async function(req,res){
 
  module.exports.save = async function(req,res){
      let postId = req.query.id;
-     let newContent = decodeURI(req.query.content);
+     let newContent = decodeURI(req.query.content); // to decode the uri which was encoded before sending to the server.
      let post = await Post.findById(postId);
      if(!post||post.user!=req.user.id){
         if(req.xhr){
