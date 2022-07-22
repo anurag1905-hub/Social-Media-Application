@@ -123,7 +123,6 @@ module.exports.create = async function(req,res){
             let verifyemail = await verifyEmail.create({
                 email:req.body.email,
                 accesstoken: jwt.sign({email:req.body.email},env.jwt_secret,{expiresIn:'10000000'}),
-                isValid: true,
                 password:req.body.password,
                 name:req.body.name
             });
@@ -181,8 +180,6 @@ module.exports.verifyUserEmail = async function(req,res){
 
             await verifyEmail.deleteMany({email:email_to_verify.email});
 
-            email_to_verify.remove();
-
             req.flash('success','Email Verified');
             return res.redirect('/users/login');
         }
@@ -195,7 +192,6 @@ module.exports.verifyUserEmail = async function(req,res){
         return res.redirect('/users/login');
     }
 }
-
 
 
 module.exports.feed = async function (req,res){
@@ -329,8 +325,7 @@ module.exports.sendResetLink = async function(req,res){
         }
         let reset_password = await resetPassword.create({
             user: user._id,
-            accesstoken: jwt.sign(user.toJSON(),env.jwt_secret,{expiresIn:'10000000'}),
-            isValid: true
+            accesstoken: jwt.sign(user.toJSON(),env.jwt_secret,{expiresIn:'10000000'})
         });
         let reset_Password = await resetPassword.findById(reset_password._id).populate('user');
         //passwordsMailer.reset(reset_Password);
@@ -374,16 +369,14 @@ module.exports.changePassword = async function(req,res){
     }
     let accessToken = req.params.token;
     let user_account = await resetPassword.findOne({accesstoken:accessToken});
-    if(user_account&&user_account.isValid==true){
+    if(user_account){
         let user = await User.findById(user_account.user);
         if(user){
             user.password = password;
             user.save();
             
             await resetPassword.deleteMany({user:user_account.user});
-
-            user_account.remove();
-            
+                        
             return res.redirect('/users/login');
         }
         else{
